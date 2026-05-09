@@ -1,43 +1,72 @@
 import express from "express";
-import JobController from "../controllers/job.controller.js";
-import { upload } from "../middlewares/upload.middleware.js";
-import { validateJob } from "../middlewares/validation.middleware.js";
-import { isAuthenticated } from "../middlewares/auth.middleware.js";
 
-const jobController = new JobController();
+import JobController from "../controllers/job.controller.js";
+
+import { isRecruiter } from "../middlewares/role.middleware.js";
+
+import { isAuthenticated } from "../middlewares/jwtAuth.middleware.js";
+
+import { validateJob } from "../middlewares/validation.middleware.js";
 
 const jobRouter = express.Router();
 
-jobRouter.get("/jobs", jobController.showJobs);
+const jobController = new JobController();
 
-// apply job
-jobRouter.post(
-  "/jobs/apply/:id",
-  upload.single("resume"),
-  jobController.applyJob
-);
+// GET ALL JOBS
+jobRouter.get("/", jobController.showJobs);
 
-// after login for recruiter
-jobRouter.get("/jobs/create", isAuthenticated, jobController.getCreateJob);
+
+// CREATE JOB
 jobRouter.post(
-  "/jobs/create",
+  "/",
   isAuthenticated,
+  isRecruiter,
   validateJob,
   jobController.postCreateJob
 );
 
-// Recruiter routes (protected)
-jobRouter.get("/my-jobs", isAuthenticated, jobController.recruiterDashboard);
-jobRouter.get("/jobs/edit/:id", isAuthenticated, jobController.getEditJob);
-jobRouter.post("/jobs/edit/:id", isAuthenticated, jobController.postEditJob);
-jobRouter.get("/jobs/delete/:id", isAuthenticated, jobController.removeJob);
 
+// RECRUITER JOBS
 jobRouter.get(
-  "/jobs/:id/applicants",
+  "/recruiter/my-jobs",
+  isAuthenticated,
+  isRecruiter,
+  jobController.recruiterDashboard
+);
+
+// GET SINGLE JOB
+jobRouter.get("/:id", jobController.jobDetails);
+
+// UPDATE JOB
+jobRouter.put(
+  "/:id",
+  isAuthenticated,
+  isRecruiter,
+  jobController.postEditJob
+);
+
+
+// DELETE JOB
+jobRouter.delete(
+  "/:id",
+  isAuthenticated,
+  isRecruiter,
+  jobController.removeJob
+);
+
+
+// APPLY FOR JOB
+jobRouter.post(
+  "/:id/apply",
+  jobController.applyJob
+);
+
+
+// VIEW APPLICANTS
+jobRouter.get(
+  "/:id/applicants",
   isAuthenticated,
   jobController.viewApplicants
 );
-
-jobRouter.get("/jobs/:id", jobController.jobDetails);
 
 export default jobRouter;

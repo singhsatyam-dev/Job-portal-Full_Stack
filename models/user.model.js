@@ -1,16 +1,36 @@
+import mongoose from "mongoose";
 
-const users = [];
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
 
-export const addUser = (user)=>{
-    users.push(user);
-}
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+    },
 
-export const findUserByEmail = (email)=>{
-    return users.find((user)=> user.email==email);
-}
+    password: {
+      type: String,
+      required: true,
+    },
 
-export const validateUser = (email,password)=>{
-    return users.find(
-    user => user.email === email && user.password === password
-  );
-}
+    role: {
+      type: String,
+      enum: ["jobseeker", "recruiter"],
+      default: "jobseeker",
+    },
+  },
+  {
+    timestamps: true,
+  },
+);
+
+const User = mongoose.model("User", userSchema);
+
+export default User;

@@ -1,62 +1,46 @@
-import express from "express";
-import cookieParser from "cookie-parser";
-import session from "express-session";
-import path from "path";
-import { fileURLToPath } from "url";
-import router from "./routes/auth.routes.js";
-import jobRouter from "./routes/job.routes.js";
-import { isAuthenticated } from "./middlewares/auth.middleware.js";
+import express from "express"
+import dotenv from "dotenv"
+import cors from "cors"
+import router from "./routes/auth.routes.js"
+import jobRouter from "./routes/job.routes.js"
 
-const app = express();
-const PORT = 3000;
+import connectDB from "./config/db.js"
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+dotenv.config();
 
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
-app.use(express.json());
+const app = express()
 
-app.use(
-  session({
-    secret: "job_portal_secret",
-    resave: false,
-    saveUninitialized: false,
-  })
-);
+const PORT = process.env.PORT || 3000
 
-app.use(router);
+//db connection
+connectDB()
+app.use(cors())
 
-app.use(jobRouter);
+//middlewares
+app.use(express.urlencoded({extended:true}))
+app.use(express.json())
 
-app.use(express.static(path.join(__dirname, "public")));
+// ROUTES
+app.use("/api/auth", router);
+app.use("/api/jobs", jobRouter);
 
-app.use("/uploads", express.static("uploads"));
-
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
-
-//setting landing page route
+// TEST ROUTE
 app.get("/", (req, res) => {
-  res.render("jobs/landing", {
-    title: "Job Portal",
+  res.json({
+    success: true,
+    message: "Job Portal API Running",
   });
 });
 
-app.get("/dashboard", isAuthenticated, (req, res) => {
-  res.render("auth/dashboard", {
-    title: "Dashboard",
-    user: req.session.user,
-    lastVisit: req.cookies.lastVisit,
-  });
-});
-
+// 404 HANDLER
 app.use((req, res) => {
-  res.status(404).render("404", {
-    title: "Page Not Found",
+  res.status(404).json({
+    success: false,
+    message: "Route not found",
   });
 });
 
+// SERVER
 app.listen(PORT, () => {
-  console.log(`Server running at ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });

@@ -1,58 +1,113 @@
-import {
-  addUser,
-  validateUser,
-  findUserByEmail,
-} from "../models/user.model.js";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+import User from "../models/user.model.js";
 
 export default class AuthController {
-  getRegister(req, res) {
-    res.render("auth/register", { title: "Register" });
-  }
+  //Register user
+  postRegister = async (req, res) => {
+    try {
+      const { name, email, password, role } = req.body;
 
-  postRegister(req, res) {
-    const { name, email, password } = req.body;
+      //checking existing user
+      const existingUser = await User.findOne({ email });
 
-    const existingUser = findUserByEmail(email);
-    if (existingUser) {
-      return res.send("User already exists");
+      if (existingUser) {
+        return res.status(409).json({
+          success: false,
+          message: "User already exist",
+        });
+      }
+
+      //hashed password
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      //add new user
+      const user = await User.create({
+        name,
+        email,
+        password: hashedPassword,
+        role,
+      });
+
+      return res.status(201).json({
+        success: true,
+        message: "User registered successfully",
+        user: user,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: "Registration failed",
+        error: error.message,
+      });
     }
+  };
 
-    addUser({ name, email, password });
-    res.redirect("/login");
-  }
+  //Login user
+  postLogin = async (req, res) => {
+    try {
+      const { email, password } = req.body;
 
-  getLogin(req, res) {
-    if (req.session.user) {
-      return res.redirect("/dashboard");
+      //validate user
+      const user = await User.findOne({ email });
+
+      if (!user) {
+        return res.status(401).json({
+          success: false,
+          message: "Invalid credentials",
+        });
+      }
+
+      //compare password
+      const isMatch = await bcrypt.compare(password, user.password);
+
+      if (!isMatch) {
+        return res.status(401).json({
+          success: false,
+          message: "Invalid credentials",
+        });
+      }
+
+      //generate token
+      const token = jwt.sign(
+        {
+          id: user._id,
+          email: user.email,
+          role: user.role,
+        },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "1d",
+        },
+      );
+
+      return res.status(200).json({
+        success: true,
+        message: "Login successful",
+        token,
+        user,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: "Login failed",
+        error: error.message,
+      });
     }
-    res.render("auth/login", { title: "Login" });
-  }
+  };
 
-  postLogin(req, res) {
-    const { email, password } = req.body;
-
-    const user = validateUser(email, password);
-
-    // ❗ STOP execution immediately if invalid
-    if (!user) {
-      return res.status(401).send("Invalid credentials");
+  logout = async (req, res) => {
+    try {
+        return res.status(200).json({
+          success: true,
+          message: "Logout successful",
+        });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: "Logout failed",
+        error: error.message,
+      });
     }
-
-    // Set session
-    req.session.user = user;
-
-    // Set cookie BEFORE redirect
-    res.cookie("lastVisit", new Date().toLocaleString(), {
-      httpOnly: true,
-    });
-
-    // ❗ RETURN is mandatory
-    return res.redirect("/dashboard");
-  }
-
-  logout(req, res) {
-    req.session.destroy(() => {
-      res.redirect("/login");
-    });
-  }
+  };
 }

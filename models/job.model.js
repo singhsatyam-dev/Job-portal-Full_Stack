@@ -1,67 +1,78 @@
-let jobs = [];
-let jobIdCounter = 1;
+import mongoose from "mongoose";
 
-export default class JobModel {
-  //all jobs
-  static getAllJobs = () => jobs;
+const applicantSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
 
-  // job by id
-  static getJobById = (id) => {
-    return jobs.find((job) => job.id === Number(id));
-  };
+    email: {
+      type: String,
+      required: true,
+    },
 
-  //create a job
-  static createJob = (job) => {
-    job.id = jobIdCounter++;
-    jobs.push(job);
-  };
+    resume: {
+      type: String,
+    },
 
-  //update job
-  static updateJob = (id, updatedData) => {
-    const job = this.getJobById(id);
-    if (!job) return false;
+    appliedAt: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+  {
+    _id: false,
+  }
+);
 
-    job.title = updatedData.title;
-    job.company = updatedData.company;
-    job.location = updatedData.location;
-    job.description = updatedData.description;
-    return true;
-  };
+const jobSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+    },
 
-  //del job
-  static deleteJob = (id) => {
-    jobs = jobs.filter((job) => job.id !== Number(id));
-  };
+    company: {
+      type: String,
+      required: true,
+      trim: true,
+    },
 
-  // job by the recruiter
-  static getJobByRecruiter = (email) => {
-    return jobs.filter((job) => job.createdBy === email);
-  };
+    location: {
+      type: String,
+      required: true,
+      trim: true,
+    },
 
-  static addApplicant = (jobId, applicant) => {
-    const job = this.getJobById(jobId);
+    salary: {
+      type: String,
+    },
 
-    if (!job) return false;
+    description: {
+      type: String,
+      required: true,
+    },
 
-    if (!job.applicants) {
-      job.applicants = [];
-    }
-    job.applicants.push(applicant);
-    return true;
-  };
+    skills: [
+      {
+        type: String,
+      },
+    ],
 
-  static getApplicants = (jobId) => {
-    const job = this.getJobById(jobId);
-    return job?.applicants || [];
-  };
+    createdBy: {
+      type: String,
+      required: true,
+    },
 
-  static jobSearch = (query) => {
-    const q = query.toLowerCase();
+    applicants: [applicantSchema],
+  },
+  {
+    timestamps: true,
+  }
+);
 
-    return jobs.filter(
-      (job) =>
-        job.title.toLowerCase().includes(q) ||
-        job.location.toLowerCase().includes(q)
-    );
-  };
-}
+const Job = mongoose.model("Job", jobSchema);
+
+export default Job;
