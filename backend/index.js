@@ -1,10 +1,15 @@
 import express from "express"
 import dotenv from "dotenv"
 import cors from "cors"
+import path from "path"
+import { fileURLToPath } from "url"
 import router from "./routes/auth.routes.js"
 import jobRouter from "./routes/job.routes.js"
 
 import connectDB from "./config/db.js"
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 dotenv.config();
 
@@ -14,10 +19,16 @@ const PORT = process.env.PORT || 3000
 
 //db connection
 connectDB()
-app.use(cors())
+app.use(cors({
+  origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
+  credentials: true,
+}))
+
+// Serve uploaded resumes
+app.use("/uploads", express.static(path.join(__dirname, "uploads")))
 
 //middlewares
-app.use(express.urlencoded({extended:true}))
+app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
 // ROUTES

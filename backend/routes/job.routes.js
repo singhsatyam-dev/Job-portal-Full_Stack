@@ -8,6 +8,8 @@ import { isAuthenticated } from "../middlewares/jwtAuth.middleware.js";
 
 import { validateJob } from "../middlewares/validation.middleware.js";
 
+import { upload } from "../middlewares/upload.middleware.js";
+
 const jobRouter = express.Router();
 
 const jobController = new JobController();
@@ -58,6 +60,7 @@ jobRouter.delete(
 // APPLY FOR JOB
 jobRouter.post(
   "/:id/apply",
+  upload.single("resume"),
   jobController.applyJob
 );
 

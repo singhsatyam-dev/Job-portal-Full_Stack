@@ -46,7 +46,7 @@ export default class JobController {
   recruiterDashboard = async (req, res) => {
     try {
       const jobs = await Job.find({
-        createdBy: req.user.eamil,
+        createdBy: req.user.email,
       });
 
       return res.status(200).json({
