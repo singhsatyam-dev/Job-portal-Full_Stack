@@ -4,12 +4,12 @@ import Footer from "../components/Footer";
 
 const MainLayout = () => {
   return (
-    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+    <div className="flex flex-col min-h-screen" style={{ alignItems: "stretch" }}>
       <Navbar />
-      <main style={{ flex: 1, position: "relative", zIndex: 1 }}>
+      <main className="flex-1 relative z-10 w-full">
         <Outlet />
       </main>
-      <Footer />
+      {!window.location.pathname.startsWith("/recruiter") && <Footer />}
     </div>
   );
 };

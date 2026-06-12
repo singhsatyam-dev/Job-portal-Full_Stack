@@ -49,7 +49,7 @@ export default class AuthController {
       const { email, password } = req.body;
 
       //validate user
-      const user = await User.findOne({ email });
+      const user = await User.findOne({ email }).select("+password");
 
       if (!user) {
         return res.status(401).json({
@@ -96,12 +96,37 @@ export default class AuthController {
     }
   };
 
+  //Get current user
+  getCurrentUser = async (req, res) => {
+    try {
+      const user = await User.findById(req.user.id);
+
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: "User not found",
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        user,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: "Failed to fetch user",
+        error: error.message,
+      });
+    }
+  };
+
   logout = async (req, res) => {
     try {
-        return res.status(200).json({
-          success: true,
-          message: "Logout successful",
-        });
+      return res.status(200).json({
+        success: true,
+        message: "Logout successful",
+      });
     } catch (error) {
       return res.status(500).json({
         success: false,

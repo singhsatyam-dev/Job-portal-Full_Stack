@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { UserPlus, Eye, EyeOff, Briefcase } from "lucide-react";
+import { UserPlus, Eye, EyeOff, Briefcase, ArrowRight } from "lucide-react";
 import { registerUser } from "../api/auth.api";
 import toast from "react-hot-toast";
 
@@ -17,8 +17,13 @@ const RegisterPage = () => {
     setLoading(true);
     try {
       await registerUser(form);
-      toast.success("Account created! Please sign in.");
-      navigate("/login");
+      if (form.role === "jobseeker") {
+        toast.success("Account created! Let's set up your profile.");
+        navigate("/profile-setup");
+      } else {
+        toast.success("Account created! Please sign in.");
+        navigate("/login");
+      }
     } catch (err) {
       const msg = err.response?.data?.message || "Registration failed";
       toast.error(msg);
@@ -34,58 +39,80 @@ const RegisterPage = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        padding: "40px 24px",
+        padding: "3rem 1.5rem",
         position: "relative",
       }}
     >
+      {/* Background glow */}
       <div
         style={{
           position: "fixed",
           top: "40%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: 500,
-          height: 500,
+          width: "600px",
+          height: "600px",
+          borderRadius: "50%",
           background: "radial-gradient(circle, rgba(139,92,246,0.1) 0%, transparent 70%)",
           pointerEvents: "none",
+          zIndex: 0,
         }}
       />
 
-      <div className="glass fade-in" style={{ width: "100%", maxWidth: 440, padding: "40px 36px" }}>
-        <div style={{ textAlign: "center", marginBottom: 32 }}>
+      {/* Card */}
+      <div
+        className="fade-in"
+        style={{
+          width: "100%",
+          maxWidth: "460px",
+          background: "rgba(22, 22, 31, 0.85)",
+          backdropFilter: "blur(24px)",
+          WebkitBackdropFilter: "blur(24px)",
+          border: "1px solid rgba(255,255,255,0.1)",
+          borderRadius: "24px",
+          padding: "2.75rem",
+          position: "relative",
+          zIndex: 1,
+          boxShadow: "0 24px 64px rgba(0,0,0,0.4), 0 0 0 1px rgba(139,92,246,0.1)",
+        }}
+      >
+        {/* Logo + heading */}
+        <div style={{ textAlign: "center", marginBottom: "2.25rem" }}>
           <div
             style={{
-              width: 52,
-              height: 52,
-              borderRadius: 14,
+              width: "64px",
+              height: "64px",
+              borderRadius: "18px",
               background: "linear-gradient(135deg, #8b5cf6, #6d28d9)",
+              boxShadow: "0 8px 24px rgba(139,92,246,0.45)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              margin: "0 auto 16px",
-              boxShadow: "0 6px 20px rgba(139,92,246,0.4)",
+              margin: "0 auto 1.25rem",
             }}
           >
-            <Briefcase size={24} color="white" />
+            <Briefcase size={28} color="white" />
           </div>
           <h1
             style={{
               fontFamily: "'Outfit', sans-serif",
-              fontSize: "1.6rem",
+              fontSize: "1.75rem",
               fontWeight: 800,
               color: "var(--text-primary)",
-              marginBottom: 6,
+              marginBottom: "0.4rem",
             }}
           >
             Create Account
           </h1>
-          <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
-            Join thousands of job seekers and recruiters
+          <p style={{ fontSize: "0.9rem", color: "var(--text-muted)" }}>
+            Join CareerForge — it's free
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-          <div>
+        {/* Form */}
+        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+          {/* Full Name */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             <label className="form-label">Full Name</label>
             <input
               type="text"
@@ -98,7 +125,8 @@ const RegisterPage = () => {
             />
           </div>
 
-          <div>
+          {/* Email */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             <label className="form-label">Email Address</label>
             <input
               type="email"
@@ -111,7 +139,8 @@ const RegisterPage = () => {
             />
           </div>
 
-          <div>
+          {/* Password */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             <label className="form-label">Password</label>
             <div style={{ position: "relative" }}>
               <input
@@ -120,17 +149,17 @@ const RegisterPage = () => {
                 value={form.password}
                 onChange={handleChange}
                 className="form-input"
+                style={{ paddingRight: "3rem" }}
                 placeholder="Min 6 characters"
                 required
                 minLength={6}
-                style={{ paddingRight: 44 }}
               />
               <button
                 type="button"
                 onClick={() => setShowPass(!showPass)}
                 style={{
                   position: "absolute",
-                  right: 12,
+                  right: "0.875rem",
                   top: "50%",
                   transform: "translateY(-50%)",
                   background: "transparent",
@@ -139,49 +168,74 @@ const RegisterPage = () => {
                   color: "var(--text-muted)",
                   display: "flex",
                   alignItems: "center",
+                  padding: "0.25rem",
                 }}
               >
-                {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
+                {showPass ? <EyeOff size={17} /> : <Eye size={17} />}
               </button>
             </div>
           </div>
 
-          <div>
+          {/* Role selector */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             <label className="form-label">I am a…</label>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-              {["jobseeker", "recruiter"].map((r) => (
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
+              {[
+                { value: "jobseeker", label: "Job Seeker", emoji: "🔍" },
+                { value: "recruiter", label: "Recruiter", emoji: "🏢" },
+              ].map(({ value, label, emoji }) => (
                 <label
-                  key={r}
+                  key={value}
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    gap: 10,
-                    padding: "12px 16px",
-                    borderRadius: 10,
-                    border: "1px solid",
-                    borderColor: form.role === r ? "var(--accent)" : "var(--border)",
-                    background: form.role === r ? "var(--accent-dim)" : "transparent",
+                    gap: "0.625rem",
+                    padding: "0.875rem 1rem",
+                    borderRadius: "12px",
                     cursor: "pointer",
-                    transition: "all 0.2s",
-                    fontSize: "0.9rem",
-                    fontWeight: 600,
-                    color: form.role === r ? "var(--accent-light)" : "var(--text-secondary)",
+                    transition: "all 0.2s ease",
+                    border: `1.5px solid ${form.role === value ? "var(--accent)" : "rgba(255,255,255,0.08)"}`,
+                    background: form.role === value
+                      ? "rgba(139,92,246,0.15)"
+                      : "rgba(255,255,255,0.03)",
                   }}
                 >
                   <input
                     type="radio"
                     name="role"
-                    value={r}
-                    checked={form.role === r}
+                    value={value}
+                    checked={form.role === value}
                     onChange={handleChange}
-                    style={{ accentColor: "var(--accent)" }}
+                    style={{ display: "none" }}
                   />
-                  {r === "jobseeker" ? "Job Seeker" : "Recruiter"}
+                  <span style={{ fontSize: "1.1rem" }}>{emoji}</span>
+                  <span
+                    style={{
+                      fontSize: "0.9rem",
+                      fontWeight: 600,
+                      color: form.role === value ? "var(--accent-light)" : "var(--text-secondary)",
+                    }}
+                  >
+                    {label}
+                  </span>
+                  {form.role === value && (
+                    <div
+                      style={{
+                        marginLeft: "auto",
+                        width: "0.9rem",
+                        height: "0.9rem",
+                        borderRadius: "50%",
+                        background: "var(--accent)",
+                        flexShrink: 0,
+                      }}
+                    />
+                  )}
                 </label>
               ))}
             </div>
           </div>
 
+          {/* Submit */}
           <button
             type="submit"
             className="btn-primary"
@@ -189,44 +243,61 @@ const RegisterPage = () => {
             style={{
               width: "100%",
               justifyContent: "center",
-              padding: "13px",
-              fontSize: "0.95rem",
-              marginTop: 4,
+              padding: "0.9rem",
+              fontSize: "1rem",
+              marginTop: "0.25rem",
               opacity: loading ? 0.7 : 1,
               cursor: loading ? "not-allowed" : "pointer",
             }}
           >
             {loading ? (
-              <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
                 <span
                   style={{
-                    width: 16,
-                    height: 16,
+                    width: "1rem",
+                    height: "1rem",
                     border: "2px solid rgba(255,255,255,0.3)",
-                    borderTop: "2px solid white",
+                    borderTopColor: "white",
                     borderRadius: "50%",
+                    animation: "spin 0.7s linear infinite",
                     display: "inline-block",
-                    animation: "spin 0.8s linear infinite",
                   }}
                 />
                 Creating account…
               </span>
             ) : (
               <>
-                <UserPlus size={16} /> Create Account
+                <UserPlus size={17} /> Create Account
               </>
             )}
           </button>
         </form>
 
-        <div style={{ marginTop: 24, textAlign: "center" }}>
-          <p style={{ color: "var(--text-muted)", fontSize: "0.875rem" }}>
-            Already have an account?{" "}
-            <Link to="/login" style={{ color: "var(--accent-light)", fontWeight: 600, textDecoration: "none" }}>
-              Sign in
-            </Link>
-          </p>
-        </div>
+        {/* Divider */}
+        <div
+          style={{
+            height: "1px",
+            background: "rgba(255,255,255,0.07)",
+            margin: "1.75rem 0 1.25rem",
+          }}
+        />
+
+        <p style={{ textAlign: "center", fontSize: "0.875rem", color: "var(--text-muted)" }}>
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            style={{
+              color: "var(--accent-light)",
+              fontWeight: 700,
+              textDecoration: "none",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.2rem",
+            }}
+          >
+            Sign in <ArrowRight size={13} />
+          </Link>
+        </p>
       </div>
 
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>

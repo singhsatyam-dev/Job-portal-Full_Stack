@@ -16,6 +16,12 @@ const applicantSchema = new mongoose.Schema(
       type: String,
     },
 
+    status: {
+      type: String,
+      enum: ["Pending", "Reviewed", "Accepted", "Rejected"],
+      default: "Pending",
+    },
+    
     appliedAt: {
       type: Date,
       default: Date.now,
@@ -23,7 +29,7 @@ const applicantSchema = new mongoose.Schema(
   },
   {
     _id: false,
-  }
+  },
 );
 
 const jobSchema = new mongoose.Schema(
@@ -62,7 +68,8 @@ const jobSchema = new mongoose.Schema(
     ],
 
     createdBy: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
 
@@ -70,7 +77,7 @@ const jobSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const Job = mongoose.model("Job", jobSchema);

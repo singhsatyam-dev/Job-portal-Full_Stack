@@ -8,14 +8,7 @@ import toast from "react-hot-toast";
 const EditJobPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [form, setForm] = useState({
-    title: "",
-    company: "",
-    location: "",
-    salary: "",
-    description: "",
-    skills: "",
-  });
+  const [form, setForm] = useState({ title: "", company: "", location: "", salary: "", description: "", skills: "" });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -46,13 +39,7 @@ const EditJobPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const payload = {
-      ...form,
-      skills: form.skills
-        .split(",")
-        .map((s) => s.trim())
-        .filter(Boolean),
-    };
+    const payload = { ...form, skills: form.skills.split(",").map((s) => s.trim()).filter(Boolean) };
     setSaving(true);
     try {
       await updateJob(id, payload);
@@ -65,39 +52,30 @@ const EditJobPage = () => {
     }
   };
 
-  if (loading) return <div style={{ minHeight: "60vh" }}><Loader size="lg" /></div>;
+  if (loading) return <div className="min-h-[60vh]"><Loader size="lg" /></div>;
 
   return (
-    <div style={{ maxWidth: 700, margin: "0 auto", padding: "40px 24px" }}>
-      <Link to="/recruiter/dashboard" className="btn-ghost" style={{ marginBottom: 24, display: "inline-flex" }}>
+    <div className="page-container-sm" style={{ paddingTop: "2.5rem", paddingBottom: "4rem" }}>
+      <Link to="/recruiter/dashboard" className="btn-ghost inline-flex mb-6">
         <ArrowLeft size={16} /> Back to Dashboard
       </Link>
 
-      <div className="glass fade-in" style={{ padding: "40px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 28 }}>
-          <div
-            style={{
-              width: 44,
-              height: 44,
-              borderRadius: 12,
-              background: "linear-gradient(135deg, #8b5cf6, #6d28d9)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+      <div className="glass fade-in" style={{ padding: "2.5rem", borderRadius: "24px" }}>
+        <div className="flex items-center gap-3 mb-7">
+          <div className="w-11 h-11 rounded-xl flex items-center justify-center"
+            style={{ background: "linear-gradient(135deg, #8b5cf6, #6d28d9)" }}>
             <Pencil size={20} color="white" />
           </div>
           <div>
-            <h1 style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1.4rem", fontWeight: 800, color: "var(--text-primary)" }}>
+            <h1 className="font-extrabold text-xl" style={{ fontFamily: "'Outfit', sans-serif", color: "var(--text-primary)" }}>
               Edit Job
             </h1>
-            <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>Update the job listing details</p>
+            <p className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>Update the job listing details</p>
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="form-label">Job Title *</label>
               <input type="text" name="title" className="form-input" value={form.title} onChange={handleChange} required />
@@ -108,7 +86,7 @@ const EditJobPage = () => {
             </div>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="form-label">Location *</label>
               <input type="text" name="location" className="form-input" value={form.location} onChange={handleChange} required />
@@ -121,22 +99,15 @@ const EditJobPage = () => {
 
           <div>
             <label className="form-label">Job Description *</label>
-            <textarea
-              name="description"
-              className="form-input"
-              value={form.description}
-              onChange={handleChange}
-              required
-              rows={6}
-              style={{ resize: "vertical", fontFamily: "inherit" }}
-            />
+            <textarea name="description" className="form-input resize-y" style={{ fontFamily: "inherit" }}
+              value={form.description} onChange={handleChange} required rows={6} />
           </div>
 
           <div>
             <label className="form-label">Required Skills (comma separated)</label>
             <input type="text" name="skills" className="form-input" value={form.skills} onChange={handleChange} />
             {form.skills && (
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 10 }}>
+              <div className="flex flex-wrap gap-1.5 mt-2.5">
                 {form.skills.split(",").map((s, i) => s.trim() && (
                   <span key={i} className="skill-chip">{s.trim()}</span>
                 ))}
@@ -144,22 +115,11 @@ const EditJobPage = () => {
             )}
           </div>
 
-          <button
-            type="submit"
-            className="btn-primary"
-            disabled={saving}
-            style={{
-              justifyContent: "center",
-              padding: "13px",
-              fontSize: "0.95rem",
-              marginTop: 4,
-              opacity: saving ? 0.7 : 1,
-              cursor: saving ? "not-allowed" : "pointer",
-            }}
-          >
+          <button type="submit" className="btn-primary justify-center py-3.5 text-base mt-1"
+            disabled={saving} style={{ opacity: saving ? 0.7 : 1, cursor: saving ? "not-allowed" : "pointer" }}>
             {saving ? (
-              <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ width: 16, height: 16, border: "2px solid rgba(255,255,255,0.3)", borderTop: "2px solid white", borderRadius: "50%", display: "inline-block", animation: "spin 0.8s linear infinite" }} />
+              <span className="flex items-center gap-2">
+                <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 Saving…
               </span>
             ) : (
@@ -168,8 +128,6 @@ const EditJobPage = () => {
           </button>
         </form>
       </div>
-
-      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );
 };

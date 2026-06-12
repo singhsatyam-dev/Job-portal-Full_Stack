@@ -1,5 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Briefcase, LogOut, Plus, LayoutDashboard, LogIn, UserPlus, Menu, X } from "lucide-react";
+import {
+  Briefcase, LogOut, Plus, LayoutDashboard,
+  LogIn, UserPlus, Menu, X, User,
+} from "lucide-react";
 import { useState } from "react";
 import useAuth from "../hooks/useAuth";
 import { logoutUser } from "../api/auth.api";
@@ -11,9 +14,7 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = async () => {
-    try {
-      await logoutUser();
-    } catch (_) {}
+    try { await logoutUser(); } catch (_) {}
     logout();
     toast.success("Logged out successfully");
     navigate("/login");
@@ -25,35 +26,45 @@ const Navbar = () => {
         position: "sticky",
         top: 0,
         zIndex: 50,
-        background: "rgba(10, 10, 15, 0.85)",
-        backdropFilter: "blur(20px)",
-        WebkitBackdropFilter: "blur(20px)",
-        borderBottom: "1px solid rgba(255,255,255,0.07)",
+        background: "rgba(10, 10, 15, 0.88)",
+        backdropFilter: "blur(24px)",
+        WebkitBackdropFilter: "blur(24px)",
+        borderBottom: "1px solid rgba(255,255,255,0.08)",
       }}
     >
       <div
         style={{
-          maxWidth: 1200,
+          maxWidth: "1280px",
           margin: "0 auto",
-          padding: "0 24px",
+          padding: "0 1.5rem",
+          height: "68px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          height: 64,
+          gap: "1rem",
         }}
       >
-        {/* Logo */}
-        <Link to="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 10 }}>
+        {/* ── Logo ── */}
+        <Link
+          to="/"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.625rem",
+            textDecoration: "none",
+            flexShrink: 0,
+          }}
+        >
           <div
             style={{
-              width: 36,
-              height: 36,
-              borderRadius: 10,
+              width: "38px",
+              height: "38px",
+              borderRadius: "11px",
               background: "linear-gradient(135deg, #8b5cf6, #6d28d9)",
+              boxShadow: "0 4px 16px rgba(139,92,246,0.45)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              boxShadow: "0 4px 12px rgba(139,92,246,0.4)",
             }}
           >
             <Briefcase size={18} color="white" />
@@ -61,108 +72,183 @@ const Navbar = () => {
           <span
             style={{
               fontFamily: "'Outfit', sans-serif",
-              fontWeight: 700,
+              fontWeight: 800,
               fontSize: "1.2rem",
               color: "var(--text-primary)",
+              letterSpacing: "-0.01em",
             }}
           >
-            Job<span className="gradient-text">Portal</span>
+            Career<span className="gradient-text">Forge</span>
           </span>
         </Link>
 
-        {/* Desktop Nav */}
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }} className="hidden md:flex">
-          <Link to="/" className="btn-ghost" style={{ fontSize: "0.9rem" }}>
+        {/* ── Desktop Nav ── */}
+        <div
+          className="hidden md:flex"
+          style={{ alignItems: "center", gap: "0.5rem" }}
+        >
+          <Link to="/jobs" className="btn-ghost" style={{ fontSize: "0.875rem" }}>
             Browse Jobs
           </Link>
 
           {isAuthenticated && user?.role === "recruiter" && (
             <>
-              <Link to="/recruiter/dashboard" className="btn-ghost" style={{ fontSize: "0.9rem" }}>
-                <LayoutDashboard size={15} />
-                Dashboard
+              <Link
+                to="/recruiter/dashboard"
+                className="btn-ghost"
+                style={{ fontSize: "0.875rem" }}
+              >
+                <LayoutDashboard size={15} /> Dashboard
               </Link>
-              <Link to="/recruiter/create-job" className="btn-primary" style={{ fontSize: "0.9rem" }}>
-                <Plus size={15} />
-                Post Job
+              <Link
+                to="/recruiter/create-job"
+                className="btn-primary"
+                style={{ fontSize: "0.875rem" }}
+              >
+                <Plus size={15} /> Post Job
               </Link>
             </>
           )}
 
           {isAuthenticated ? (
-            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.625rem", marginLeft: "0.25rem" }}>
+              {/* User badge — same height as buttons */}
               <div
                 style={{
-                  background: "var(--accent-dim)",
-                  border: "1px solid var(--border-hover)",
-                  borderRadius: 8,
-                  padding: "6px 14px",
-                  fontSize: "0.85rem",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  padding: "0.45rem 0.875rem",
+                  borderRadius: "10px",
+                  background: "rgba(139,92,246,0.15)",
+                  border: "1px solid rgba(139,92,246,0.35)",
                   color: "var(--accent-light)",
-                  fontWeight: 600,
+                  fontSize: "0.875rem",
+                  fontWeight: 700,
+                  whiteSpace: "nowrap",
+                  height: "36px",
                 }}
               >
+                <div
+                  style={{
+                    width: "22px",
+                    height: "22px",
+                    borderRadius: "50%",
+                    background: "linear-gradient(135deg, #8b5cf6, #6d28d9)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "0.65rem",
+                    fontWeight: 800,
+                    color: "white",
+                    flexShrink: 0,
+                  }}
+                >
+                  {user?.name?.charAt(0)?.toUpperCase()}
+                </div>
                 {user?.name}
               </div>
-              <button onClick={handleLogout} className="btn-danger" style={{ padding: "8px 14px" }}>
-                <LogOut size={14} />
-                Logout
+
+              <button
+                onClick={handleLogout}
+                className="btn-danger"
+                style={{ height: "36px", padding: "0 14px", fontSize: "0.875rem" }}
+              >
+                <LogOut size={14} /> Logout
               </button>
             </div>
           ) : (
-            <div style={{ display: "flex", gap: 10 }}>
-              <Link to="/login" className="btn-ghost">
-                <LogIn size={15} />
-                Login
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginLeft: "0.25rem" }}>
+              <Link to="/login" className="btn-ghost" style={{ fontSize: "0.875rem" }}>
+                <LogIn size={15} /> Login
               </Link>
-              <Link to="/register" className="btn-primary">
-                <UserPlus size={15} />
-                Register
+              <Link to="/register" className="btn-primary" style={{ fontSize: "0.875rem" }}>
+                <UserPlus size={15} /> Register
               </Link>
             </div>
           )}
         </div>
 
-        {/* Mobile Hamburger */}
+        {/* ── Mobile Hamburger ── */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="btn-ghost md:hidden"
-          style={{ padding: 8, border: "none" }}
+          className="md:hidden"
+          style={{
+            background: "transparent",
+            border: "1px solid rgba(255,255,255,0.1)",
+            borderRadius: "8px",
+            padding: "0.45rem",
+            cursor: "pointer",
+            color: "var(--text-secondary)",
+            display: "flex",
+            alignItems: "center",
+          }}
         >
           {menuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
-      {/* Mobile Menu */}
+      {/* ── Mobile Menu ── */}
       {menuOpen && (
         <div
           style={{
-            background: "var(--bg-secondary)",
-            borderTop: "1px solid var(--border)",
-            padding: "16px 24px",
+            borderTop: "1px solid rgba(255,255,255,0.07)",
+            background: "rgba(15, 15, 22, 0.97)",
+            padding: "1rem 1.5rem",
             display: "flex",
             flexDirection: "column",
-            gap: 10,
+            gap: "0.625rem",
           }}
-          className="md:hidden"
         >
-          <Link to="/" className="btn-ghost" onClick={() => setMenuOpen(false)}>
+          <Link to="/jobs" className="btn-ghost" onClick={() => setMenuOpen(false)}>
             Browse Jobs
           </Link>
+
           {isAuthenticated && user?.role === "recruiter" && (
             <>
-              <Link to="/recruiter/dashboard" className="btn-ghost" onClick={() => setMenuOpen(false)}>
+              <Link
+                to="/recruiter/dashboard"
+                className="btn-ghost"
+                onClick={() => setMenuOpen(false)}
+              >
                 <LayoutDashboard size={15} /> Dashboard
               </Link>
-              <Link to="/recruiter/create-job" className="btn-primary" onClick={() => setMenuOpen(false)}>
+              <Link
+                to="/recruiter/create-job"
+                className="btn-primary"
+                onClick={() => setMenuOpen(false)}
+              >
                 <Plus size={15} /> Post Job
               </Link>
             </>
           )}
+
           {isAuthenticated ? (
-            <button onClick={() => { handleLogout(); setMenuOpen(false); }} className="btn-danger">
-              <LogOut size={14} /> Logout
-            </button>
+            <>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  padding: "0.6rem 1rem",
+                  borderRadius: "10px",
+                  background: "rgba(139,92,246,0.12)",
+                  border: "1px solid rgba(139,92,246,0.25)",
+                  color: "var(--accent-light)",
+                  fontSize: "0.875rem",
+                  fontWeight: 700,
+                }}
+              >
+                <User size={14} />
+                {user?.name}
+              </div>
+              <button
+                onClick={() => { handleLogout(); setMenuOpen(false); }}
+                className="btn-danger"
+              >
+                <LogOut size={14} /> Logout
+              </button>
+            </>
           ) : (
             <>
               <Link to="/login" className="btn-ghost" onClick={() => setMenuOpen(false)}>

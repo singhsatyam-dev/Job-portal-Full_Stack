@@ -46,7 +46,7 @@ export default class JobController {
   recruiterDashboard = async (req, res) => {
     try {
       const jobs = await Job.find({
-        createdBy: req.user.email,
+        createdBy: req.user.id,
       });
 
       return res.status(200).json({
@@ -74,7 +74,7 @@ export default class JobController {
         description,
         salary,
         skills,
-        createdBy: req.user.email,
+        createdBy: req.user.id,
       });
 
       return res.status(201).json({
@@ -128,7 +128,7 @@ export default class JobController {
       }
 
       //Authorization
-      if (job.createdBy !== req.user.email) {
+      if (job.createdBy.toString() !== req.user.id) {
         return res.status(403).json({
           success: false,
           message: "Unauthorized",
@@ -173,8 +173,18 @@ export default class JobController {
         });
       }
 
-      //Add Applicant
+      const alreadyApplied = job.applicants.find(
+        (applicant) => applicant.email === email,
+      );
 
+      if (alreadyApplied) {
+        return res.status(400).json({
+          success: false,
+          message: "You have already applied for this job",
+        });
+      }
+
+      //Add Applicant
       job.applicants.push({
         name,
         email,
@@ -214,6 +224,13 @@ export default class JobController {
         });
       }
 
+      if (job.createdBy.toString() !== req.user.id) {
+        return res.status(403).json({
+          success: false,
+          message: "Unauthorized",
+        });
+      }
+
       return res.status(200).json({
         success: true,
         applicants: job.applicants,
@@ -238,7 +255,7 @@ export default class JobController {
         });
       }
 
-      if (job.createdBy !== req.user.email) {
+      if (job.createdBy.toString() !== req.user.id) {
         return res.status(403).json({
           success: false,
           message: "Unauthorized",

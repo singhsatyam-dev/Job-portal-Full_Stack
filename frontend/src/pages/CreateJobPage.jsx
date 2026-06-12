@@ -16,7 +16,8 @@ const CreateJobPage = () => {
   });
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,54 +41,89 @@ const CreateJobPage = () => {
   };
 
   return (
-    <div style={{ maxWidth: 700, margin: "0 auto", padding: "40px 24px" }}>
-      <Link to="/recruiter/dashboard" className="btn-ghost" style={{ marginBottom: 24, display: "inline-flex" }}>
+    <div className="page-container-sm" style={{ paddingTop: "2.5rem", paddingBottom: "4rem" }}>
+      <Link to="/recruiter/dashboard" className="btn-ghost inline-flex mb-6">
         <ArrowLeft size={16} /> Back to Dashboard
       </Link>
 
-      <div className="glass fade-in" style={{ padding: "40px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 28 }}>
+      <div className="glass fade-in" style={{ padding: "2.5rem", borderRadius: "24px" }}>
+        <div className="flex items-center gap-3 mb-7">
           <div
-            style={{
-              width: 44,
-              height: 44,
-              borderRadius: 12,
-              background: "linear-gradient(135deg, #8b5cf6, #6d28d9)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
+            className="w-11 h-11 rounded-xl flex items-center justify-center"
+            style={{ background: "linear-gradient(135deg, #8b5cf6, #6d28d9)" }}
           >
             <Plus size={20} color="white" />
           </div>
           <div>
-            <h1 style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1.4rem", fontWeight: 800, color: "var(--text-primary)" }}>
+            <h1
+              className="font-extrabold text-xl"
+              style={{
+                fontFamily: "'Outfit', sans-serif",
+                color: "var(--text-primary)",
+              }}
+            >
               Post a New Job
             </h1>
-            <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>Fill in the details below to publish your listing</p>
+            <p
+              className="text-xs mt-0.5"
+              style={{ color: "var(--text-muted)" }}
+            >
+              Fill in the details below to publish your listing
+            </p>
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="form-label">Job Title *</label>
-              <input type="text" name="title" className="form-input" placeholder="e.g. Frontend Developer" value={form.title} onChange={handleChange} required />
+              <input
+                type="text"
+                name="title"
+                className="form-input"
+                placeholder="e.g. Frontend Developer"
+                value={form.title}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div>
               <label className="form-label">Company Name *</label>
-              <input type="text" name="company" className="form-input" placeholder="e.g. TechCorp Inc." value={form.company} onChange={handleChange} required />
+              <input
+                type="text"
+                name="company"
+                className="form-input"
+                placeholder="e.g. TechCorp Inc."
+                value={form.company}
+                onChange={handleChange}
+                required
+              />
             </div>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="form-label">Location *</label>
-              <input type="text" name="location" className="form-input" placeholder="e.g. Remote, Bangalore" value={form.location} onChange={handleChange} required />
+              <input
+                type="text"
+                name="location"
+                className="form-input"
+                placeholder="e.g. Remote, Bangalore"
+                value={form.location}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div>
               <label className="form-label">Salary (optional)</label>
-              <input type="text" name="salary" className="form-input" placeholder="e.g. ₹12-18 LPA" value={form.salary} onChange={handleChange} />
+              <input
+                type="text"
+                name="salary"
+                className="form-input"
+                placeholder="e.g. ₹12-18 LPA"
+                value={form.salary}
+                onChange={handleChange}
+              />
             </div>
           </div>
 
@@ -95,18 +131,20 @@ const CreateJobPage = () => {
             <label className="form-label">Job Description *</label>
             <textarea
               name="description"
-              className="form-input"
+              className="form-input resize-y"
+              style={{ fontFamily: "inherit" }}
               placeholder="Describe the role, responsibilities, and requirements…"
               value={form.description}
               onChange={handleChange}
               required
               rows={6}
-              style={{ resize: "vertical", fontFamily: "inherit" }}
             />
           </div>
 
           <div>
-            <label className="form-label">Required Skills (comma separated)</label>
+            <label className="form-label">
+              Required Skills (comma separated)
+            </label>
             <input
               type="text"
               name="skills"
@@ -116,40 +154,41 @@ const CreateJobPage = () => {
               onChange={handleChange}
             />
             {form.skills && (
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 10 }}>
-                {form.skills.split(",").map((s, i) => s.trim() && (
-                  <span key={i} className="skill-chip">{s.trim()}</span>
-                ))}
+              <div className="flex flex-wrap gap-1.5 mt-2.5">
+                {form.skills.split(",").map(
+                  (s, i) =>
+                    s.trim() && (
+                      <span key={i} className="skill-chip">
+                        {s.trim()}
+                      </span>
+                    ),
+                )}
               </div>
             )}
           </div>
 
           <button
             type="submit"
-            className="btn-primary"
+            className="btn-primary justify-center py-3.5 text-base mt-1"
             disabled={loading}
             style={{
-              justifyContent: "center",
-              padding: "13px",
-              fontSize: "0.95rem",
-              marginTop: 4,
               opacity: loading ? 0.7 : 1,
               cursor: loading ? "not-allowed" : "pointer",
             }}
           >
             {loading ? (
-              <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ width: 16, height: 16, border: "2px solid rgba(255,255,255,0.3)", borderTop: "2px solid white", borderRadius: "50%", display: "inline-block", animation: "spin 0.8s linear infinite" }} />
+              <span className="flex items-center gap-2">
+                <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 Posting Job…
               </span>
             ) : (
-              <><Briefcase size={16} /> Publish Job</>
+              <>
+                <Briefcase size={16} /> Publish Job
+              </>
             )}
           </button>
         </form>
       </div>
-
-      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );
 };
