@@ -1,7 +1,14 @@
 import { Link, useNavigate } from "react-router-dom";
 import {
-  Briefcase, LogOut, Plus, LayoutDashboard,
-  LogIn, UserPlus, Menu, X, User,
+  Briefcase,
+  LogOut,
+  Plus,
+  LayoutDashboard,
+  LogIn,
+  UserPlus,
+  Menu,
+  X,
+  User,
 } from "lucide-react";
 import { useState } from "react";
 import useAuth from "../hooks/useAuth";
@@ -14,10 +21,12 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = async () => {
-    try { await logoutUser(); } catch (_) {}
+    try {
+      await logoutUser();
+    } catch (_) {}
     logout();
     toast.success("Logged out successfully");
-    navigate("/login");
+    navigate("/");
   };
 
   return (
@@ -87,7 +96,11 @@ const Navbar = () => {
           className="hidden md:flex"
           style={{ alignItems: "center", gap: "0.5rem" }}
         >
-          <Link to="/jobs" className="btn-ghost" style={{ fontSize: "0.875rem" }}>
+          <Link
+            to="/jobs"
+            className="btn-ghost"
+            style={{ fontSize: "0.875rem" }}
+          >
             Browse Jobs
           </Link>
 
@@ -111,7 +124,14 @@ const Navbar = () => {
           )}
 
           {isAuthenticated ? (
-            <div style={{ display: "flex", alignItems: "center", gap: "0.625rem", marginLeft: "0.25rem" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.625rem",
+                marginLeft: "0.25rem",
+              }}
+            >
               {/* User badge — same height as buttons */}
               <div
                 style={{
@@ -152,17 +172,36 @@ const Navbar = () => {
               <button
                 onClick={handleLogout}
                 className="btn-danger"
-                style={{ height: "36px", padding: "0 14px", fontSize: "0.875rem" }}
+                style={{
+                  height: "36px",
+                  padding: "0 14px",
+                  fontSize: "0.875rem",
+                }}
               >
                 <LogOut size={14} /> Logout
               </button>
             </div>
           ) : (
-            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginLeft: "0.25rem" }}>
-              <Link to="/login" className="btn-ghost" style={{ fontSize: "0.875rem" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                marginLeft: "0.25rem",
+              }}
+            >
+              <Link
+                to="/login"
+                className="btn-ghost"
+                style={{ fontSize: "0.875rem" }}
+              >
                 <LogIn size={15} /> Login
               </Link>
-              <Link to="/register" className="btn-primary" style={{ fontSize: "0.875rem" }}>
+              <Link
+                to="/register"
+                className="btn-primary"
+                style={{ fontSize: "0.875rem" }}
+              >
                 <UserPlus size={15} /> Register
               </Link>
             </div>
@@ -200,7 +239,11 @@ const Navbar = () => {
             gap: "0.625rem",
           }}
         >
-          <Link to="/jobs" className="btn-ghost" onClick={() => setMenuOpen(false)}>
+          <Link
+            to="/jobs"
+            className="btn-ghost"
+            onClick={() => setMenuOpen(false)}
+          >
             Browse Jobs
           </Link>
 
@@ -243,7 +286,10 @@ const Navbar = () => {
                 {user?.name}
               </div>
               <button
-                onClick={() => { handleLogout(); setMenuOpen(false); }}
+                onClick={() => {
+                  handleLogout();
+                  setMenuOpen(false);
+                }}
                 className="btn-danger"
               >
                 <LogOut size={14} /> Logout
@@ -251,10 +297,18 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <Link to="/login" className="btn-ghost" onClick={() => setMenuOpen(false)}>
+              <Link
+                to="/login"
+                className="btn-ghost"
+                onClick={() => setMenuOpen(false)}
+              >
                 <LogIn size={15} /> Login
               </Link>
-              <Link to="/register" className="btn-primary" onClick={() => setMenuOpen(false)}>
+              <Link
+                to="/register"
+                className="btn-primary"
+                onClick={() => setMenuOpen(false)}
+              >
                 <UserPlus size={15} /> Register
               </Link>
             </>

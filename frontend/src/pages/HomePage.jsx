@@ -23,8 +23,6 @@ import ScoreGauge from "../components/ScoreGauge";
 import useAuth from "../hooks/useAuth";
 import toast from "react-hot-toast";
 
-
-
 /* ── Centered container helper ── */
 const Container = ({ children, className = "" }) => (
   <div
@@ -123,7 +121,10 @@ const HomePage = () => {
   return (
     <div className="min-h-screen">
       {/* ─── Hero ─── */}
-      <section className="relative overflow-hidden" style={{ paddingTop: "5rem", paddingBottom: "4rem" }}>
+      <section
+        className="relative overflow-hidden"
+        style={{ paddingTop: "5rem", paddingBottom: "4rem" }}
+      >
         <div
           className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full"
           style={{
@@ -180,198 +181,449 @@ const HomePage = () => {
         </div>
       </section>
 
-
-
       {/* ─── ATS Scorer Panel (jobseekers only) ─── */}
       {isJobseeker && (
-        <section style={{ padding: "0 1.5rem 3rem" }}>
+        <section style={{ padding: "0 1.5rem 3.5rem" }}>
           <div style={{ maxWidth: "860px", margin: "0 auto" }}>
-            <div className="glass overflow-hidden">
-              {/* Toggle Header */}
+            {/* ── Card ── */}
+            <div
+              className="overflow-hidden"
+              style={{
+                borderRadius: "24px",
+                background: "rgba(17,17,27,0.85)",
+                border: "1px solid rgba(139,92,246,0.25)",
+                boxShadow:
+                  "0 0 60px rgba(139,92,246,0.08), 0 2px 32px rgba(0,0,0,0.4)",
+              }}
+            >
+              {/* ── Gradient accent strip ── */}
+              <div
+                style={{
+                  height: "3px",
+                  background:
+                    "linear-gradient(90deg, #8b5cf6, #6d28d9, #a78bfa)",
+                }}
+              />
+
+              {/* ── Toggle Header ── */}
               <button
                 onClick={() => {
                   setShowAts(!showAts);
                   setAtsResult(null);
                 }}
-                className="w-full flex items-center justify-between px-7 py-5 transition-all hover:bg-white/5"
+                className="w-full transition-all"
+                style={{
+                  padding: "1.5rem 2rem",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  background: "transparent",
+                }}
               >
-                <div className="flex items-center gap-3">
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "1rem" }}
+                >
+                  {/* Icon with glow */}
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
                     style={{
-                      background: "linear-gradient(135deg, #8b5cf6, #6d28d9)",
+                      width: "3rem",
+                      height: "3rem",
+                      borderRadius: "14px",
+                      flexShrink: 0,
+                      background:
+                        "linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      boxShadow: "0 4px 20px rgba(139,92,246,0.45)",
                     }}
                   >
-                    <Sparkles size={18} color="white" />
+                    <Sparkles size={20} color="white" />
                   </div>
-                  <div className="text-left">
+
+                  <div style={{ textAlign: "left" }}>
                     <div
-                      className="font-bold text-sm"
-                      style={{ color: "var(--text-primary)" }}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.6rem",
+                        marginBottom: "0.2rem",
+                      }}
                     >
-                      Check Your ATS Score
+                      <span
+                        style={{
+                          fontFamily: "'Outfit', sans-serif",
+                          fontSize: "1.05rem",
+                          fontWeight: 700,
+                          color: "var(--text-primary)",
+                        }}
+                      >
+                        AI Resume Scorer
+                      </span>
+                      <span
+                        style={{
+                          fontSize: "0.65rem",
+                          fontWeight: 700,
+                          letterSpacing: "0.08em",
+                          padding: "2px 8px",
+                          borderRadius: "20px",
+                          background:
+                            "linear-gradient(135deg, rgba(139,92,246,0.3), rgba(109,40,217,0.3))",
+                          border: "1px solid rgba(139,92,246,0.4)",
+                          color: "var(--accent-light)",
+                        }}
+                      >
+                        AI POWERED
+                      </span>
                     </div>
                     <div
-                      className="text-xs mt-0.5"
-                      style={{ color: "var(--text-muted)" }}
+                      style={{
+                        fontSize: "0.82rem",
+                        color: "var(--text-muted)",
+                      }}
                     >
-                      Upload your resume and see how well it matches any role
+                      Upload your resume · Enter a target role · Get your ATS
+                      match score instantly
                     </div>
                   </div>
                 </div>
-                {showAts ? (
-                  <ChevronUp size={18} style={{ color: "var(--text-muted)" }} />
-                ) : (
-                  <ChevronDown
-                    size={18}
-                    style={{ color: "var(--text-muted)" }}
-                  />
-                )}
+
+                <div
+                  style={{
+                    width: "2rem",
+                    height: "2rem",
+                    borderRadius: "50%",
+                    background: "rgba(139,92,246,0.12)",
+                    border: "1px solid rgba(139,92,246,0.25)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                  }}
+                >
+                  {showAts ? (
+                    <ChevronUp
+                      size={16}
+                      style={{ color: "var(--accent-light)" }}
+                    />
+                  ) : (
+                    <ChevronDown
+                      size={16}
+                      style={{ color: "var(--accent-light)" }}
+                    />
+                  )}
+                </div>
               </button>
 
-              {/* Panel Body */}
+              {/* ── Panel Body ── */}
               {showAts && (
-                <div className="px-7 pb-7 flex flex-col gap-5 fade-in">
-                  {/* Job preference input */}
-                  <div>
-                    <label className="form-label">
-                      <Briefcase size={13} className="inline mr-1.5" />
-                      Job Preference / Role you're targeting
-                    </label>
-                    <textarea
-                      rows={3}
-                      className="form-input resize-none"
-                      placeholder="e.g. Frontend Developer with React, TypeScript. Looking for remote roles..."
-                      value={jobPref}
-                      onChange={(e) => setJobPref(e.target.value)}
-                    />
-                  </div>
+                <div
+                  className="fade-in"
+                  style={{
+                    padding: "0 2rem 2rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "1.5rem",
+                  }}
+                >
+                  {/* Divider */}
+                  <div
+                    style={{
+                      height: "1px",
+                      background:
+                        "linear-gradient(90deg, rgba(139,92,246,0.3), transparent)",
+                    }}
+                  />
 
-                  {/* Resume drop zone */}
-                  <div>
-                    <label className="form-label">Resume (PDF)</label>
+                  {/* Two-column layout */}
+                  <div
+                    id="ats-cols"
+                    style={{
+                      display: "grid",
+                      gap: "1.5rem",
+                      gridTemplateColumns: "1fr 1fr",
+                    }}
+                  >
+                    {/* ── Left: Job Preference ── */}
                     <div
-                      onDragOver={(e) => {
-                        e.preventDefault();
-                        setAtsDragOver(true);
-                      }}
-                      onDragLeave={() => setAtsDragOver(false)}
-                      onDrop={(e) => {
-                        e.preventDefault();
-                        setAtsDragOver(false);
-                        handleAtsFile(e.dataTransfer.files[0]);
-                      }}
-                      onClick={() => atsFileRef.current?.click()}
-                      className="relative rounded-xl p-7 text-center cursor-pointer transition-all"
                       style={{
-                        border: `2px dashed ${atsDragOver ? "var(--accent)" : atsResume ? "var(--success)" : "var(--border)"}`,
-                        background: atsDragOver
-                          ? "rgba(139,92,246,0.08)"
-                          : atsResume
-                            ? "rgba(16,185,129,0.06)"
-                            : "rgba(255,255,255,0.02)",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "0.5rem",
                       }}
                     >
-                      <input
-                        ref={atsFileRef}
-                        type="file"
-                        accept="application/pdf"
-                        className="hidden"
-                        onChange={(e) => handleAtsFile(e.target.files[0])}
+                      <label
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.4rem",
+                          fontSize: "0.75rem",
+                          fontWeight: 700,
+                          letterSpacing: "0.06em",
+                          textTransform: "uppercase",
+                          color: "var(--text-muted)",
+                        }}
+                      >
+                        <Briefcase size={12} /> Target Role / Job Preference
+                      </label>
+                      <textarea
+                        rows={7}
+                        className="form-input resize-none"
+                        placeholder="e.g. Frontend Developer with React & TypeScript. Looking for remote roles in product-based companies…"
+                        value={jobPref}
+                        onChange={(e) => setJobPref(e.target.value)}
+                        style={{ height: "100%", minHeight: "170px" }}
                       />
-                      {atsResume ? (
-                        <>
-                          <FileText
-                            size={30}
-                            className="mx-auto mb-2"
-                            style={{ color: "var(--success)" }}
-                          />
-                          <p
-                            className="font-semibold text-sm mb-0.5"
-                            style={{ color: "var(--success)" }}
-                          >
-                            {atsResume.name}
-                          </p>
-                          <p
-                            className="text-xs"
-                            style={{ color: "var(--text-muted)" }}
-                          >
-                            {(atsResume.size / 1024).toFixed(0)} KB · Click to
-                            change
-                          </p>
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setAtsResume(null);
-                              setAtsResult(null);
-                            }}
-                            className="absolute top-2.5 right-2.5 p-1.5 rounded-md"
-                            style={{
-                              background: "rgba(239,68,68,0.15)",
-                              border: "1px solid rgba(239,68,68,0.3)",
-                              color: "#f87171",
-                            }}
-                          >
-                            <X size={13} />
-                          </button>
-                        </>
-                      ) : (
-                        <>
-                          <Upload
-                            size={30}
-                            className="mx-auto mb-2"
-                            style={{ color: "var(--text-muted)" }}
-                          />
-                          <p
-                            className="font-semibold text-sm mb-0.5"
-                            style={{ color: "var(--text-secondary)" }}
-                          >
-                            Drop your resume here or click to browse
-                          </p>
-                          <p
-                            className="text-xs"
-                            style={{ color: "var(--text-muted)" }}
-                          >
-                            PDF only · Max 5 MB
-                          </p>
-                        </>
-                      )}
+                    </div>
+
+                    {/* ── Right: Resume Drop Zone ── */}
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "0.5rem",
+                      }}
+                    >
+                      <label
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.4rem",
+                          fontSize: "0.75rem",
+                          fontWeight: 700,
+                          letterSpacing: "0.06em",
+                          textTransform: "uppercase",
+                          color: "var(--text-muted)",
+                        }}
+                      >
+                        <FileText size={12} /> Resume Upload (PDF)
+                      </label>
+                      <div
+                        onDragOver={(e) => {
+                          e.preventDefault();
+                          setAtsDragOver(true);
+                        }}
+                        onDragLeave={() => setAtsDragOver(false)}
+                        onDrop={(e) => {
+                          e.preventDefault();
+                          setAtsDragOver(false);
+                          handleAtsFile(e.dataTransfer.files[0]);
+                        }}
+                        onClick={() => atsFileRef.current?.click()}
+                        className="relative cursor-pointer transition-all"
+                        style={{
+                          flex: 1,
+                          minHeight: "170px",
+                          borderRadius: "16px",
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "0.5rem",
+                          textAlign: "center",
+                          padding: "1.5rem",
+                          border: `2px dashed ${
+                            atsDragOver
+                              ? "var(--accent)"
+                              : atsResume
+                                ? "#10b981"
+                                : "rgba(139,92,246,0.3)"
+                          }`,
+                          background: atsDragOver
+                            ? "rgba(139,92,246,0.1)"
+                            : atsResume
+                              ? "rgba(16,185,129,0.07)"
+                              : "rgba(139,92,246,0.04)",
+                          transition: "all 0.2s ease",
+                        }}
+                      >
+                        <input
+                          ref={atsFileRef}
+                          type="file"
+                          accept="application/pdf"
+                          className="hidden"
+                          onChange={(e) => handleAtsFile(e.target.files[0])}
+                        />
+
+                        {atsResume ? (
+                          <>
+                            <div
+                              style={{
+                                width: "3.5rem",
+                                height: "3.5rem",
+                                borderRadius: "12px",
+                                background: "rgba(16,185,129,0.15)",
+                                border: "1px solid rgba(16,185,129,0.3)",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                              }}
+                            >
+                              <FileText
+                                size={26}
+                                style={{ color: "#10b981" }}
+                              />
+                            </div>
+                            <p
+                              style={{
+                                fontWeight: 700,
+                                fontSize: "0.85rem",
+                                color: "#10b981",
+                                margin: 0,
+                              }}
+                            >
+                              {atsResume.name}
+                            </p>
+                            <p
+                              style={{
+                                fontSize: "0.72rem",
+                                color: "var(--text-muted)",
+                                margin: 0,
+                              }}
+                            >
+                              {(atsResume.size / 1024).toFixed(0)} KB · Click to
+                              change
+                            </p>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setAtsResume(null);
+                                setAtsResult(null);
+                              }}
+                              style={{
+                                position: "absolute",
+                                top: "0.6rem",
+                                right: "0.6rem",
+                                padding: "4px",
+                                borderRadius: "8px",
+                                background: "rgba(239,68,68,0.15)",
+                                border: "1px solid rgba(239,68,68,0.3)",
+                                color: "#f87171",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                              }}
+                            >
+                              <X size={13} />
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <div
+                              style={{
+                                width: "3.5rem",
+                                height: "3.5rem",
+                                borderRadius: "12px",
+                                background: "rgba(139,92,246,0.12)",
+                                border: "1px solid rgba(139,92,246,0.25)",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                              }}
+                            >
+                              <Upload
+                                size={24}
+                                style={{ color: "var(--accent-light)" }}
+                              />
+                            </div>
+                            <p
+                              style={{
+                                fontWeight: 600,
+                                fontSize: "0.85rem",
+                                color: "var(--text-secondary)",
+                                margin: 0,
+                              }}
+                            >
+                              Drop your resume here
+                            </p>
+                            <p
+                              style={{
+                                fontSize: "0.72rem",
+                                color: "var(--text-muted)",
+                                margin: 0,
+                              }}
+                            >
+                              or click to browse · PDF only · Max 5 MB
+                            </p>
+                          </>
+                        )}
+                      </div>
                     </div>
                   </div>
 
-                  {/* Score button */}
+                  {/* ── Score Button ── */}
                   <button
                     onClick={handleAtsScore}
                     disabled={atsLoading || !atsResume || !jobPref.trim()}
-                    className="btn-primary justify-center py-3"
+                    className="btn-primary justify-center"
                     style={{
-                      opacity: !atsResume || !jobPref.trim() ? 0.5 : 1,
+                      padding: "0.9rem 2rem",
+                      fontSize: "0.95rem",
+                      opacity: !atsResume || !jobPref.trim() ? 0.45 : 1,
                       cursor:
                         !atsResume || !jobPref.trim()
                           ? "not-allowed"
                           : "pointer",
+                      background: "linear-gradient(135deg, #8b5cf6, #6d28d9)",
+                      boxShadow:
+                        !atsResume || !jobPref.trim()
+                          ? "none"
+                          : "0 4px 20px rgba(139,92,246,0.4)",
+                      transition: "all 0.2s ease",
                     }}
                   >
                     {atsLoading ? (
-                      <span className="flex items-center gap-2">
+                      <span
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.6rem",
+                        }}
+                      >
                         <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                        Analyzing…
+                        Analyzing your resume…
                       </span>
                     ) : (
-                      <>
-                        <Sparkles size={16} /> Score My Resume
-                      </>
+                      <span
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.5rem",
+                        }}
+                      >
+                        <Sparkles size={17} /> Analyze & Score My Resume
+                      </span>
                     )}
                   </button>
 
-                  {/* Results */}
+                  {/* ── Results ── */}
                   {atsResult && (
-                    <div className="flex flex-col gap-5 fade-in">
+                    <div
+                      className="fade-in"
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "1.25rem",
+                      }}
+                    >
+                      {/* Divider */}
+                      <div
+                        style={{
+                          height: "1px",
+                          background: "rgba(255,255,255,0.06)",
+                        }}
+                      />
+
                       <ScoreGauge score={atsResult.score} />
 
+                      {/* Summary banner */}
                       <div
-                        className="flex gap-2.5 items-start p-4 rounded-xl"
                         style={{
+                          display: "flex",
+                          gap: "0.75rem",
+                          alignItems: "flex-start",
+                          padding: "1rem 1.25rem",
+                          borderRadius: "14px",
                           background:
                             atsResult.score >= 80
                               ? "rgba(16,185,129,0.08)"
@@ -381,20 +633,29 @@ const HomePage = () => {
                       >
                         {atsResult.score >= 80 ? (
                           <CheckCircle2
-                            size={16}
-                            className="mt-0.5 shrink-0"
-                            style={{ color: "var(--success)" }}
+                            size={18}
+                            style={{
+                              color: "var(--success)",
+                              flexShrink: 0,
+                              marginTop: "1px",
+                            }}
                           />
                         ) : (
                           <AlertTriangle
-                            size={16}
-                            className="mt-0.5 shrink-0"
-                            style={{ color: "var(--warning)" }}
+                            size={18}
+                            style={{
+                              color: "var(--warning)",
+                              flexShrink: 0,
+                              marginTop: "1px",
+                            }}
                           />
                         )}
                         <p
-                          className="text-sm leading-relaxed font-medium"
                           style={{
+                            fontSize: "0.88rem",
+                            lineHeight: 1.6,
+                            fontWeight: 500,
+                            margin: 0,
                             color:
                               atsResult.score >= 80
                                 ? "var(--success)"
@@ -407,27 +668,53 @@ const HomePage = () => {
                         </p>
                       </div>
 
+                      {/* Feedback list */}
                       {atsResult.feedback?.length > 0 && (
                         <div>
                           <p
-                            className="text-xs font-bold uppercase tracking-wider mb-3"
-                            style={{ color: "var(--text-muted)" }}
+                            style={{
+                              fontSize: "0.72rem",
+                              fontWeight: 800,
+                              letterSpacing: "0.1em",
+                              textTransform: "uppercase",
+                              color: "var(--text-muted)",
+                              marginBottom: "0.75rem",
+                            }}
                           >
                             AI Feedback
                           </p>
-                          <div className="flex flex-col gap-2">
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: "0.6rem",
+                            }}
+                          >
                             {atsResult.feedback.map((point, i) => (
                               <div
                                 key={i}
-                                className="flex gap-2.5 items-start p-3 rounded-xl"
                                 style={{
+                                  display: "flex",
+                                  gap: "0.75rem",
+                                  alignItems: "flex-start",
+                                  padding: "0.75rem 1rem",
+                                  borderRadius: "12px",
                                   background: "rgba(255,255,255,0.03)",
                                   border: "1px solid var(--border)",
                                 }}
                               >
                                 <div
-                                  className="w-5 h-5 rounded-full shrink-0 mt-0.5 flex items-center justify-center text-xs font-bold"
                                   style={{
+                                    width: "1.4rem",
+                                    height: "1.4rem",
+                                    borderRadius: "50%",
+                                    flexShrink: 0,
+                                    marginTop: "1px",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    fontSize: "0.7rem",
+                                    fontWeight: 800,
                                     background: "var(--accent-dim)",
                                     border: "1px solid rgba(139,92,246,0.3)",
                                     color: "var(--accent-light)",
@@ -436,8 +723,12 @@ const HomePage = () => {
                                   {i + 1}
                                 </div>
                                 <p
-                                  className="text-sm leading-relaxed"
-                                  style={{ color: "var(--text-secondary)" }}
+                                  style={{
+                                    fontSize: "0.85rem",
+                                    lineHeight: 1.7,
+                                    color: "var(--text-secondary)",
+                                    margin: 0,
+                                  }}
                                 >
                                   {point}
                                 </p>
@@ -452,6 +743,10 @@ const HomePage = () => {
               )}
             </div>
           </div>
+
+          <style>{`
+            @media (max-width: 640px) { #ats-cols { grid-template-columns: 1fr !important; } }
+          `}</style>
         </section>
       )}
 

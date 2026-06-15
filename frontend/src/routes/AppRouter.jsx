@@ -19,10 +19,9 @@ const AppRouter = () => {
   return (
     <Routes>
       <Route element={<MainLayout />}>
-        {/* Public routes */}
-        <Route path="/" element={<LandingPage />} />
-
+        {/* Guest-only routes — redirect authenticated users to their dashboard */}
         <Route element={<GuestRoute />}>
+          <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
         </Route>
