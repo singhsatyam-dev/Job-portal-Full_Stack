@@ -220,13 +220,7 @@ const LandingPage = () => {
             >
               Get Started Free <ArrowRight size={18} />
             </Link>
-            <Link
-              to="/jobs"
-              className="btn-ghost"
-              style={{ padding: "14px 32px", fontSize: "1rem" }}
-            >
-              <Briefcase size={18} /> Browse Jobs
-            </Link>
+            
           </div>
 
           {/* Trust badges */}
