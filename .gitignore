@@ -4,6 +4,11 @@ frontend/node_modules
 
 .env
 backend/.env
+frontend/.env
+
+uploads/*
+backend/uploads/*
+!backend/uploads/.gitkeep
 
 # Logs
 logs
@@ -14,7 +19,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-dist
+frontend/dist
 dist-ssr
 *.local
 

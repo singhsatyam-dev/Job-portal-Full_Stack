@@ -5,13 +5,13 @@ export const sendConfirmationMail = async (toEmail, jobTitle) => {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "sinhgsatyam1@gmail.com",
-        pass: "cmmvzbtnaqcvexoo",
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
       },
     });
 
     const mailOptions = {
-      from: `"Job Portal"`,
+      from: `"CareerForge"`,
       to: toEmail,
       subject: "Job Application Confirmation",
       html: `
@@ -20,12 +20,11 @@ export const sendConfirmationMail = async (toEmail, jobTitle) => {
         <p>Our team will contact you if shortlisted.</p>
         <br/>
         <p>Regards,<br/>Job Portal Team</p>
-      `
+      `,
     };
 
     await transporter.sendMail(mailOptions);
     console.log("Confirmation email sent to:", toEmail);
-
   } catch (error) {
     console.error("Email error:", error.message);
   }

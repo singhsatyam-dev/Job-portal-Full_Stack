@@ -29,10 +29,17 @@ export default class AuthController {
         role,
       });
 
+      const userResponse = {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      };
+
       return res.status(201).json({
         success: true,
         message: "User registered successfully",
-        user: user,
+        user: userResponse,
       });
     } catch (error) {
       return res.status(500).json({
@@ -81,11 +88,18 @@ export default class AuthController {
         },
       );
 
+      const userResponse = {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      };
+
       return res.status(200).json({
         success: true,
         message: "Login successful",
         token,
-        user,
+        user: userResponse,
       });
     } catch (error) {
       return res.status(500).json({

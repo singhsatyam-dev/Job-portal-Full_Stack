@@ -62,6 +62,9 @@ export const calculateAtsScore = async (req, res) => {
       feedback: aiData.feedback,
     });
   } catch (error) {
+    if (req.file?.path && fs.existsSync(req.file.path)) {
+      fs.unlinkSync(req.file.path);
+    }
     console.error("Error in ATS Scoring:", error);
     res
       .status(500)
