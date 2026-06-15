@@ -13,7 +13,7 @@ import EditJobPage from "../pages/EditJobPage";
 import ApplicantsPage from "../pages/ApplicantsPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import ProfileSetupPage from "../pages/ProfileSetupPage";
-import GuestRoute from "../pages/GuestRoute";
+import GuestRoute from "./GuestRoute";
 
 const AppRouter = () => {
   return (

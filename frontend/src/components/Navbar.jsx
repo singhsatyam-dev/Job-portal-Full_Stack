@@ -10,6 +10,7 @@ import {
   X,
   User,
 } from "lucide-react";
+import Swal from "sweetalert2";
 import { useState } from "react";
 import useAuth from "../hooks/useAuth";
 import { logoutUser } from "../api/auth.api";
@@ -21,6 +22,22 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = async () => {
+    const result = await Swal.fire({
+      title: "Logout?",
+      text: "Are you sure you want to logout from CareerForge?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Logout",
+      cancelButtonText: "Cancel",
+      confirmButtonColor: "#8b5cf6",
+      cancelButtonColor: "#6b7280",
+      background: "#111827",
+      color: "#ffffff",
+      reverseButtons: true,
+    });
+
+    if (!result.isConfirmed) return;
+    
     try {
       await logoutUser();
     } catch (_) {}
