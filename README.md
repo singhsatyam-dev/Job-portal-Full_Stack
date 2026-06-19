@@ -268,7 +268,7 @@ This project helped me gain practical experience in:
 ### Clone Repository
 
 ```bash
-git clone https://github.com/your-username/CareerForge.git
+git clone https://github.com/singhsatyam-dev/Job-portal-Full_Stack/tree/main
 cd CareerForge
 ```
 
@@ -288,21 +288,6 @@ npm install
 npm run dev
 ```
 
-### Environment Variables
-
-Create a `.env` file in the backend directory:
-
-```env
-PORT=5000
-
-MONGODB_URI=your_mongodb_connection_string
-
-JWT_SECRET=your_jwt_secret
-
-GEMINI_API_KEY=your_gemini_api_key
-```
-
----
 
 # 🌟 Why CareerForge Stands Out
 
