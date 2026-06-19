@@ -1,4 +1,4 @@
-import fs from "fs";
+// import fs from "fs";
 import { PDFParse } from "pdf-parse";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
@@ -15,8 +15,9 @@ export const calculateAtsScore = async (req, res) => {
     }
 
     // 2. Read the PDF file from the uploads folder
-    const dataBuffer = fs.readFileSync(req.file.path);
-    const pdfData = await new PDFParse(dataBuffer);
+    // const dataBuffer = fs.readFileSync(req.file.path);
+    // const pdfData = await new PDFParse(dataBuffer);
+    const pdfData = await new PDFParse(req.file.buffer);
     const resumeText = pdfData.text;
 
     // 3. Define the prompt for Gemini
@@ -52,8 +53,11 @@ export const calculateAtsScore = async (req, res) => {
     // Parse the JSON string into a JavaScript object
     const aiData = JSON.parse(responseText);
 
-    // 5. Clean up the uploaded file to save space (Optional but recommended)
-    fs.unlinkSync(req.file.path);
+    // 5. Clean up the uploaded file to save space
+    // fs.unlinkSync(req.file.path);
+    if (req.file?.path && fs.existsSync(req.file.path)) {
+      fs.unlinkSync(req.file.path);
+    }
 
     // 6. Send the result to the frontend
     res.status(200).json({
