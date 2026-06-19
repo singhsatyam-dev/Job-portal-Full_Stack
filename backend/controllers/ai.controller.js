@@ -1,42 +1,41 @@
-import * as pdfParse from "pdf-parse";
+import pdfParse from "pdf-parse";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export const calculateAtsScore = async (req, res) => {
   try {
+    // Check file
     if (!req.file) {
       return res.status(400).json({
+        success: false,
         message: "Please upload a resume PDF.",
       });
     }
 
+    // Check job description
     const { jobDescription } = req.body;
 
     if (!jobDescription) {
       return res.status(400).json({
+        success: false,
         message: "Job description is required.",
       });
     }
 
-    // Parse PDF directly from memory buffer
-    console.log("PDF PARSE EXPORTS:");
-    console.log(pdfParse);
-
-    return res.status(200).json({
-      success: true,
-      exports: Object.keys(pdfParse),
-    });
-
+    // Parse PDF from memory buffer
+    const pdfData = await pdfParse(req.file.buffer);
     const resumeText = pdfData.text;
 
-    console.log("Resume Text Length:", resumeText?.length);
-    console.log("Resume Preview:", resumeText?.substring(0, 500));
+    console.log("Resume Length:", resumeText?.length);
+    console.log("Resume Preview:", resumeText?.substring(0, 300));
 
     if (!resumeText || resumeText.trim().length === 0) {
       return res.status(400).json({
+        success: false,
         message: "Could not extract text from PDF.",
       });
     }
 
+    // Gemini
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
     const prompt = `
@@ -53,17 +52,17 @@ ${resumeText}
 Instructions:
 1. Calculate an ATS match score between 0 and 100.
 2. Consider skills, technologies, projects, experience, keywords, and relevance.
-3. Give realistic scoring. Do NOT return 0 unless the resume is completely unrelated.
+3. Do NOT return 0 unless the resume is completely unrelated.
 4. Return exactly 3 improvement suggestions.
+5. Return ONLY valid JSON.
 
-Return ONLY valid JSON:
-
+Example:
 {
   "score": 85,
   "feedback": [
-    "Feedback 1",
-    "Feedback 2",
-    "Feedback 3"
+    "Add more quantified achievements",
+    "Include more cloud deployment experience",
+    "Highlight testing skills"
   ]
 }
 `;
@@ -87,8 +86,8 @@ Return ONLY valid JSON:
 
     return res.status(200).json({
       success: true,
-      score: aiData.score,
-      feedback: aiData.feedback,
+      score: Number(aiData.score),
+      feedback: aiData.feedback || [],
     });
   } catch (error) {
     console.error("ATS Error:", error);
