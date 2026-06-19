@@ -1,79 +1,102 @@
-// import fs from "fs";
-import { PDFParse } from "pdf-parse";
+import * as pdfParse from "pdf-parse";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export const calculateAtsScore = async (req, res) => {
   try {
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    // 1. Check if file and job description are provided
     if (!req.file) {
-      return res.status(400).json({ message: "Please upload a resume PDF." });
-    }
-    const { jobDescription } = req.body;
-    if (!jobDescription) {
-      return res.status(400).json({ message: "Job description is required." });
+      return res.status(400).json({
+        message: "Please upload a resume PDF.",
+      });
     }
 
-    // 2. Read the PDF file from the uploads folder
-    // const dataBuffer = fs.readFileSync(req.file.path);
-    // const pdfData = await new PDFParse(dataBuffer);
-    const pdfData = await new PDFParse(req.file.buffer);
+    const { jobDescription } = req.body;
+
+    if (!jobDescription) {
+      return res.status(400).json({
+        message: "Job description is required.",
+      });
+    }
+
+    // Parse PDF directly from memory buffer
+    console.log("PDF PARSE EXPORTS:");
+    console.log(pdfParse);
+
+    return res.status(200).json({
+      success: true,
+      exports: Object.keys(pdfParse),
+    });
+
     const resumeText = pdfData.text;
 
-    // 3. Define the prompt for Gemini
+    console.log("Resume Text Length:", resumeText?.length);
+    console.log("Resume Preview:", resumeText?.substring(0, 500));
+
+    if (!resumeText || resumeText.trim().length === 0) {
+      return res.status(400).json({
+        message: "Could not extract text from PDF.",
+      });
+    }
+
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
     const prompt = `
-      You are an expert ATS (Applicant Tracking System). 
-      Review the following Resume against the provided Job Description.
-      
-      Job Description:
-      ${jobDescription}
+You are an expert ATS (Applicant Tracking System).
 
-      Resume Text:
-      ${resumeText}
+Analyze the resume against the job description.
 
-      Provide an ATS match score out of 100. Also provide 3 short bullet points on what is missing or can be improved.
-      You MUST return the response ONLY as a valid JSON object with the following structure, with no markdown formatting or extra text:
-      {
-        "score": 85,
-        "feedback": ["Missing React context experience", "Need more details on API integration"]
-      }
-    `;
+Job Description:
+${jobDescription}
 
-    // 4. Call Gemini API
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+Resume:
+${resumeText}
+
+Instructions:
+1. Calculate an ATS match score between 0 and 100.
+2. Consider skills, technologies, projects, experience, keywords, and relevance.
+3. Give realistic scoring. Do NOT return 0 unless the resume is completely unrelated.
+4. Return exactly 3 improvement suggestions.
+
+Return ONLY valid JSON:
+
+{
+  "score": 85,
+  "feedback": [
+    "Feedback 1",
+    "Feedback 2",
+    "Feedback 3"
+  ]
+}
+`;
+
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.5-flash",
+    });
+
     const result = await model.generateContent(prompt);
+
     let responseText = result.response.text();
 
-    // Clean the response in case Gemini adds ```json to the output
     responseText = responseText
       .replace(/```json/g, "")
       .replace(/```/g, "")
       .trim();
 
-    console.log("Gemini Response:");
-    console.log(responseText);
-    // Parse the JSON string into a JavaScript object
+    console.log("Gemini Response:", responseText);
+
     const aiData = JSON.parse(responseText);
 
-    // 5. Clean up the uploaded file to save space
-    // fs.unlinkSync(req.file.path);
-    if (req.file?.path && fs.existsSync(req.file.path)) {
-      fs.unlinkSync(req.file.path);
-    }
-
-    // 6. Send the result to the frontend
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       score: aiData.score,
       feedback: aiData.feedback,
     });
   } catch (error) {
-    if (req.file?.path && fs.existsSync(req.file.path)) {
-      fs.unlinkSync(req.file.path);
-    }
-    console.error("Error in ATS Scoring:", error);
-    res
-      .status(500)
-      .json({ message: "Error calculating ATS score", error: error.message });
+    console.error("ATS Error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Error calculating ATS score",
+      error: error.message,
+    });
   }
 };
