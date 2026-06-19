@@ -50,6 +50,8 @@ export const calculateAtsScore = async (req, res) => {
       .replace(/```/g, "")
       .trim();
 
+    console.log("Gemini Response:");
+    console.log(responseText);
     // Parse the JSON string into a JavaScript object
     const aiData = JSON.parse(responseText);
 
