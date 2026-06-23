@@ -1,8 +1,15 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  Briefcase, Upload, FileText, X, ChevronRight,
-  Sparkles, CheckCircle2, AlertTriangle, SkipForward,
+  Briefcase,
+  Upload,
+  FileText,
+  X,
+  ChevronRight,
+  Sparkles,
+  CheckCircle2,
+  AlertTriangle,
+  SkipForward,
 } from "lucide-react";
 import { scoreResume } from "../api/ai.api";
 import ScoreGauge from "../components/ScoreGauge";
@@ -18,7 +25,11 @@ const StepIndicator = ({ current }) => {
         const done = idx < current;
         const active = idx === current;
         return (
-          <div key={label} className="flex items-center" style={{ flex: i < 2 ? 1 : 0 }}>
+          <div
+            key={label}
+            className="flex items-center"
+            style={{ flex: i < 2 ? 1 : 0 }}
+          >
             <div className="flex flex-col items-center gap-1.5">
               <div
                 className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 transition-all duration-300"
@@ -26,13 +37,13 @@ const StepIndicator = ({ current }) => {
                   background: done
                     ? "var(--success)"
                     : active
-                    ? "linear-gradient(135deg, #8b5cf6, #6d28d9)"
-                    : "rgba(255,255,255,0.06)",
+                      ? "linear-gradient(135deg, #8b5cf6, #6d28d9)"
+                      : "rgba(255,255,255,0.06)",
                   border: active
                     ? "2px solid var(--accent)"
                     : done
-                    ? "2px solid var(--success)"
-                    : "2px solid var(--border)",
+                      ? "2px solid var(--success)"
+                      : "2px solid var(--border)",
                   color: done || active ? "white" : "var(--text-muted)",
                   boxShadow: active ? "0 0 12px rgba(139,92,246,0.5)" : "none",
                 }}
@@ -45,8 +56,8 @@ const StepIndicator = ({ current }) => {
                   color: active
                     ? "var(--accent-light)"
                     : done
-                    ? "var(--success)"
-                    : "var(--text-muted)",
+                      ? "var(--success)"
+                      : "var(--text-muted)",
                 }}
               >
                 {label}
@@ -56,7 +67,9 @@ const StepIndicator = ({ current }) => {
               <div
                 className="flex-1 h-0.5 mx-1 mb-6 transition-all duration-300"
                 style={{
-                  background: done ? "var(--success)" : "rgba(255,255,255,0.08)",
+                  background: done
+                    ? "var(--success)"
+                    : "rgba(255,255,255,0.08)",
                 }}
               />
             )}
@@ -80,17 +93,34 @@ const ProfileSetupPage = () => {
 
   const handleFile = (file) => {
     if (!file) return;
-    if (file.type !== "application/pdf") { toast.error("Only PDF files are accepted."); return; }
-    if (file.size > 5 * 1024 * 1024) { toast.error("File must be under 5 MB."); return; }
+    if (file.type !== "application/pdf") {
+      toast.error("Only PDF files are accepted.");
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("File must be under 5 MB.");
+      return;
+    }
     setResumeFile(file);
   };
 
-  const handleDrop = (e) => { e.preventDefault(); setDragOver(false); handleFile(e.dataTransfer.files[0]); };
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setDragOver(false);
+    handleFile(e.dataTransfer.files[0]);
+  };
 
-  const handlePreferenceNext = (e) => { e.preventDefault(); if (!jobPreference.trim()) return; setStep(2); };
+  const handlePreferenceNext = (e) => {
+    e.preventDefault();
+    if (!jobPreference.trim()) return;
+    setStep(2);
+  };
 
   const handleScore = async () => {
-    if (!resumeFile) { toast.error("Please upload your resume PDF first."); return; }
+    if (!resumeFile) {
+      toast.error("Please upload your resume PDF first.");
+      return;
+    }
     setLoading(true);
     try {
       const data = await scoreResume(resumeFile, jobPreference);
@@ -107,20 +137,23 @@ const ProfileSetupPage = () => {
 
   return (
     <div className="min-h-[calc(100vh-64px)] flex items-center justify-center px-6 py-10 relative">
-
       {/* Ambient glow blobs */}
       <div
         className="pointer-events-none fixed w-[500px] h-[500px] rounded-full"
         style={{
-          top: "30%", left: "25%",
-          background: "radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%)",
+          top: "30%",
+          left: "25%",
+          background:
+            "radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%)",
         }}
       />
       <div
         className="pointer-events-none fixed w-[400px] h-[400px] rounded-full"
         style={{
-          bottom: "20%", right: "20%",
-          background: "radial-gradient(circle, rgba(16,185,129,0.06) 0%, transparent 70%)",
+          bottom: "20%",
+          right: "20%",
+          background:
+            "radial-gradient(circle, rgba(16,185,129,0.06) 0%, transparent 70%)",
         }}
       />
 
@@ -138,10 +171,10 @@ const ProfileSetupPage = () => {
           padding: "2.75rem",
           position: "relative",
           zIndex: 1,
-          boxShadow: "0 24px 64px rgba(0,0,0,0.4), 0 0 0 1px rgba(139,92,246,0.1)",
+          boxShadow:
+            "0 24px 64px rgba(0,0,0,0.4), 0 0 0 1px rgba(139,92,246,0.1)",
         }}
       >
-
         {/* Header */}
         <div className="text-center mb-7">
           <div
@@ -155,7 +188,10 @@ const ProfileSetupPage = () => {
           </div>
           <h1
             className="font-extrabold text-2xl mb-1.5"
-            style={{ fontFamily: "'Outfit', sans-serif", color: "var(--text-primary)" }}
+            style={{
+              fontFamily: "'Outfit', sans-serif",
+              color: "var(--text-primary)",
+            }}
           >
             Set Up Your Profile
           </h1>
@@ -184,16 +220,27 @@ const ProfileSetupPage = () => {
                 className="form-input resize-y"
                 style={{ minHeight: 120 }}
               />
-              <p className="text-xs mt-1.5" style={{ color: "var(--text-muted)" }}>
-                Describe the role, skills, and technologies you're targeting. This will be used to evaluate your resume.
+              <p
+                className="text-xs mt-1.5"
+                style={{ color: "var(--text-muted)" }}
+              >
+                Describe the role, skills, and technologies you're targeting.
+                This will be used to evaluate your resume.
               </p>
             </div>
 
-            <button type="submit" className="btn-primary w-full justify-center py-3.5">
+            <button
+              type="submit"
+              className="btn-primary w-full justify-center py-3.5"
+            >
               Continue <ChevronRight size={16} />
             </button>
 
-            <button type="button" onClick={handleSkip} className="btn-ghost w-full justify-center">
+            <button
+              type="button"
+              onClick={handleSkip}
+              className="btn-ghost w-full justify-center"
+            >
               <SkipForward size={15} /> Skip for now
             </button>
           </form>
@@ -204,7 +251,10 @@ const ProfileSetupPage = () => {
           <div className="flex flex-col gap-5">
             {/* Drop Zone */}
             <div
-              onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+              onDragOver={(e) => {
+                e.preventDefault();
+                setDragOver(true);
+              }}
               onDragLeave={() => setDragOver(false)}
               onDrop={handleDrop}
               onClick={() => fileInputRef.current?.click()}
@@ -214,8 +264,8 @@ const ProfileSetupPage = () => {
                 background: dragOver
                   ? "rgba(139,92,246,0.08)"
                   : resumeFile
-                  ? "rgba(16,185,129,0.06)"
-                  : "rgba(255,255,255,0.02)",
+                    ? "rgba(16,185,129,0.06)"
+                    : "rgba(255,255,255,0.02)",
               }}
             >
               <input
@@ -228,13 +278,25 @@ const ProfileSetupPage = () => {
 
               {resumeFile ? (
                 <>
-                  <FileText size={36} className="mx-auto mb-2.5" style={{ color: "var(--success)" }} />
-                  <p className="font-bold mb-1" style={{ color: "var(--success)" }}>{resumeFile.name}</p>
+                  <FileText
+                    size={36}
+                    className="mx-auto mb-2.5"
+                    style={{ color: "var(--success)" }}
+                  />
+                  <p
+                    className="font-bold mb-1"
+                    style={{ color: "var(--success)" }}
+                  >
+                    {resumeFile.name}
+                  </p>
                   <p className="text-xs" style={{ color: "var(--text-muted)" }}>
                     {(resumeFile.size / 1024).toFixed(0)} KB · Click to change
                   </p>
                   <button
-                    onClick={(e) => { e.stopPropagation(); setResumeFile(null); }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setResumeFile(null);
+                    }}
                     className="absolute top-2.5 right-2.5 flex items-center p-1.5 rounded-md cursor-pointer"
                     style={{
                       background: "rgba(239,68,68,0.15)",
@@ -247,11 +309,20 @@ const ProfileSetupPage = () => {
                 </>
               ) : (
                 <>
-                  <Upload size={36} className="mx-auto mb-2.5" style={{ color: "var(--text-muted)" }} />
-                  <p className="font-semibold mb-1" style={{ color: "var(--text-secondary)" }}>
+                  <Upload
+                    size={36}
+                    className="mx-auto mb-2.5"
+                    style={{ color: "var(--text-muted)" }}
+                  />
+                  <p
+                    className="font-semibold mb-1"
+                    style={{ color: "var(--text-secondary)" }}
+                  >
                     Drop your resume here, or click to browse
                   </p>
-                  <p className="text-xs" style={{ color: "var(--text-muted)" }}>PDF only · Max 5 MB</p>
+                  <p className="text-xs" style={{ color: "var(--text-muted)" }}>
+                    PDF only · Max 5 MB
+                  </p>
                 </>
               )}
             </div>
@@ -264,10 +335,17 @@ const ProfileSetupPage = () => {
                 border: "1px solid rgba(139,92,246,0.2)",
               }}
             >
-              <Sparkles size={16} className="mt-0.5 shrink-0" style={{ color: "var(--accent-light)" }} />
-              <p className="text-xs leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-                Our AI will compare your resume against your job preference and give you an ATS
-                compatibility score with actionable feedback.
+              <Sparkles
+                size={16}
+                className="mt-0.5 shrink-0"
+                style={{ color: "var(--accent-light)" }}
+              />
+              <p
+                className="text-xs leading-relaxed"
+                style={{ color: "var(--text-secondary)" }}
+              >
+                Our AI will compare your resume against your job preference and
+                give you an ATS compatibility score with actionable feedback.
               </p>
             </div>
 
@@ -286,11 +364,16 @@ const ProfileSetupPage = () => {
                   Analyzing resume…
                 </span>
               ) : (
-                <><Sparkles size={16} /> Score My Resume</>
+                <>
+                  <Sparkles size={16} /> Score My Resume
+                </>
               )}
             </button>
 
-            <button onClick={handleSkip} className="btn-ghost w-full justify-center">
+            <button
+              onClick={handleSkip}
+              className="btn-ghost w-full justify-center"
+            >
               <SkipForward size={15} /> Skip — I'll do this later
             </button>
           </div>
@@ -305,18 +388,32 @@ const ProfileSetupPage = () => {
             <div
               className="flex gap-2.5 items-start p-4 rounded-xl"
               style={{
-                background: result.score >= 80 ? "rgba(16,185,129,0.08)" : "rgba(245,158,11,0.08)",
+                background:
+                  result.score >= 80
+                    ? "rgba(16,185,129,0.08)"
+                    : "rgba(245,158,11,0.08)",
                 border: `1px solid ${result.score >= 80 ? "rgba(16,185,129,0.3)" : "rgba(245,158,11,0.3)"}`,
               }}
             >
               {result.score >= 80 ? (
-                <CheckCircle2 size={16} className="mt-0.5 shrink-0" style={{ color: "var(--success)" }} />
+                <CheckCircle2
+                  size={16}
+                  className="mt-0.5 shrink-0"
+                  style={{ color: "var(--success)" }}
+                />
               ) : (
-                <AlertTriangle size={16} className="mt-0.5 shrink-0" style={{ color: "var(--warning)" }} />
+                <AlertTriangle
+                  size={16}
+                  className="mt-0.5 shrink-0"
+                  style={{ color: "var(--warning)" }}
+                />
               )}
               <p
                 className="text-sm leading-relaxed font-medium"
-                style={{ color: result.score >= 80 ? "var(--success)" : "var(--warning)" }}
+                style={{
+                  color:
+                    result.score >= 80 ? "var(--success)" : "var(--warning)",
+                }}
               >
                 {result.score >= 80
                   ? "Your resume is a strong match! You're well-positioned for this type of role."
@@ -353,7 +450,10 @@ const ProfileSetupPage = () => {
                       >
                         {i + 1}
                       </div>
-                      <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+                      <p
+                        className="text-sm leading-relaxed"
+                        style={{ color: "var(--text-secondary)" }}
+                      >
                         {point}
                       </p>
                     </div>

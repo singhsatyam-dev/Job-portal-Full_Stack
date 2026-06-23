@@ -1,9 +1,17 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
-  LayoutDashboard, Plus, Pencil, Trash2,
-  Users, Briefcase, MapPin, Building2,
-  AlertTriangle, TrendingUp, Clock,
+  LayoutDashboard,
+  Plus,
+  Pencil,
+  Trash2,
+  Users,
+  Briefcase,
+  MapPin,
+  Building2,
+  AlertTriangle,
+  TrendingUp,
+  Clock,
 } from "lucide-react";
 import { getMyJobs, deleteJob } from "../api/jobs.api";
 import Loader from "../components/Loader";
@@ -47,7 +55,10 @@ const RecruiterDashboard = () => {
     }
   };
 
-  const totalApplicants = jobs.reduce((sum, j) => sum + (j.applicants?.length || 0), 0);
+  const totalApplicants = jobs.reduce(
+    (sum, j) => sum + (j.applicants?.length || 0),
+    0,
+  );
 
   return (
     <div
@@ -326,7 +337,11 @@ const RecruiterDashboard = () => {
         >
           <Briefcase
             size={48}
-            style={{ color: "var(--text-muted)", margin: "0 auto 1rem", display: "block" }}
+            style={{
+              color: "var(--text-muted)",
+              margin: "0 auto 1rem",
+              display: "block",
+            }}
           />
           <h3
             style={{
@@ -338,7 +353,13 @@ const RecruiterDashboard = () => {
           >
             No jobs posted yet
           </h3>
-          <p style={{ fontSize: "0.875rem", color: "var(--text-muted)", marginBottom: "1.5rem" }}>
+          <p
+            style={{
+              fontSize: "0.875rem",
+              color: "var(--text-muted)",
+              marginBottom: "1.5rem",
+            }}
+          >
             Start by posting your first job listing.
           </p>
           <Link to="/recruiter/create-job" className="btn-primary">
@@ -353,7 +374,12 @@ const RecruiterDashboard = () => {
           {jobs.map((job) => {
             const applicantCount = job.applicants?.length || 0;
             const initials = job.company
-              ? job.company.split(" ").map((w) => w[0]).slice(0, 2).join("").toUpperCase()
+              ? job.company
+                  .split(" ")
+                  .map((w) => w[0])
+                  .slice(0, 2)
+                  .join("")
+                  .toUpperCase()
               : "CF";
 
             return (
@@ -457,15 +483,22 @@ const RecruiterDashboard = () => {
                             gap: "0.35rem",
                             fontSize: "0.78rem",
                             fontWeight: 600,
-                            color: applicantCount > 0 ? "var(--success)" : "var(--text-muted)",
-                            background: applicantCount > 0 ? "rgba(16,185,129,0.1)" : "rgba(255,255,255,0.05)",
+                            color:
+                              applicantCount > 0
+                                ? "var(--success)"
+                                : "var(--text-muted)",
+                            background:
+                              applicantCount > 0
+                                ? "rgba(16,185,129,0.1)"
+                                : "rgba(255,255,255,0.05)",
                             border: `1px solid ${applicantCount > 0 ? "rgba(16,185,129,0.25)" : "rgba(255,255,255,0.08)"}`,
                             borderRadius: "6px",
                             padding: "0.2rem 0.6rem",
                           }}
                         >
                           <Users size={11} />
-                          {applicantCount} {applicantCount === 1 ? "applicant" : "applicants"}
+                          {applicantCount}{" "}
+                          {applicantCount === 1 ? "applicant" : "applicants"}
                         </span>
                       </div>
                     </div>
@@ -566,11 +599,25 @@ const RecruiterDashboard = () => {
             >
               Delete this job?
             </h3>
-            <p style={{ fontSize: "0.875rem", color: "var(--text-muted)", marginBottom: "2rem", lineHeight: 1.6 }}>
-              This action cannot be undone. All applicant data will be permanently lost.
+            <p
+              style={{
+                fontSize: "0.875rem",
+                color: "var(--text-muted)",
+                marginBottom: "2rem",
+                lineHeight: 1.6,
+              }}
+            >
+              This action cannot be undone. All applicant data will be
+              permanently lost.
             </p>
 
-            <div style={{ display: "flex", gap: "0.75rem", justifyContent: "center" }}>
+            <div
+              style={{
+                display: "flex",
+                gap: "0.75rem",
+                justifyContent: "center",
+              }}
+            >
               <button
                 onClick={() => setConfirmDelete(null)}
                 className="btn-ghost"

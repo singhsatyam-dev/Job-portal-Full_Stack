@@ -16,6 +16,7 @@ export const applyJob = (id, formData) =>
     headers: { "Content-Type": "multipart/form-data" },
   });
 
-export const getApplicants = (id) => axiosInstance.get(`/jobs/${id}/applicants`);
+export const getApplicants = (id) =>
+  axiosInstance.get(`/jobs/${id}/applicants`);
 
 export const getMyJobs = () => axiosInstance.get("/jobs/recruiter/my-jobs");

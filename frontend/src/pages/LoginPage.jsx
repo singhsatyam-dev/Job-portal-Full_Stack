@@ -12,7 +12,8 @@ const LoginPage = () => {
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,7 +56,8 @@ const LoginPage = () => {
           width: "600px",
           height: "600px",
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(139,92,246,0.1) 0%, transparent 70%)",
+          background:
+            "radial-gradient(circle, rgba(139,92,246,0.1) 0%, transparent 70%)",
           pointerEvents: "none",
           zIndex: 0,
         }}
@@ -75,7 +77,8 @@ const LoginPage = () => {
           padding: "2.75rem",
           position: "relative",
           zIndex: 1,
-          boxShadow: "0 24px 64px rgba(0,0,0,0.4), 0 0 0 1px rgba(139,92,246,0.1)",
+          boxShadow:
+            "0 24px 64px rgba(0,0,0,0.4), 0 0 0 1px rgba(139,92,246,0.1)",
         }}
       >
         {/* Logo + heading */}
@@ -112,9 +115,14 @@ const LoginPage = () => {
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+        <form
+          onSubmit={handleSubmit}
+          style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}
+        >
           {/* Email */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}
+          >
             <label className="form-label">Email Address</label>
             <input
               type="email"
@@ -128,7 +136,9 @@ const LoginPage = () => {
           </div>
 
           {/* Password */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}
+          >
             <label className="form-label">Password</label>
             <div style={{ position: "relative" }}>
               <input
@@ -179,7 +189,9 @@ const LoginPage = () => {
             }}
           >
             {loading ? (
-              <span style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <span
+                style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+              >
                 <span
                   style={{
                     width: "1rem",
@@ -210,7 +222,13 @@ const LoginPage = () => {
           }}
         />
 
-        <p style={{ textAlign: "center", fontSize: "0.875rem", color: "var(--text-muted)" }}>
+        <p
+          style={{
+            textAlign: "center",
+            fontSize: "0.875rem",
+            color: "var(--text-muted)",
+          }}
+        >
           Don't have an account?{" "}
           <Link
             to="/register"

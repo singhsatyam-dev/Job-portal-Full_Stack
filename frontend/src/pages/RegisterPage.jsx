@@ -6,11 +6,17 @@ import toast from "react-hot-toast";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
-  const [form, setForm] = useState({ name: "", email: "", password: "", role: "jobseeker" });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    role: "jobseeker",
+  });
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,7 +59,8 @@ const RegisterPage = () => {
           width: "600px",
           height: "600px",
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(139,92,246,0.1) 0%, transparent 70%)",
+          background:
+            "radial-gradient(circle, rgba(139,92,246,0.1) 0%, transparent 70%)",
           pointerEvents: "none",
           zIndex: 0,
         }}
@@ -73,7 +80,8 @@ const RegisterPage = () => {
           padding: "2.75rem",
           position: "relative",
           zIndex: 1,
-          boxShadow: "0 24px 64px rgba(0,0,0,0.4), 0 0 0 1px rgba(139,92,246,0.1)",
+          boxShadow:
+            "0 24px 64px rgba(0,0,0,0.4), 0 0 0 1px rgba(139,92,246,0.1)",
         }}
       >
         {/* Logo + heading */}
@@ -110,9 +118,14 @@ const RegisterPage = () => {
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+        <form
+          onSubmit={handleSubmit}
+          style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}
+        >
           {/* Full Name */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}
+          >
             <label className="form-label">Full Name</label>
             <input
               type="text"
@@ -126,7 +139,9 @@ const RegisterPage = () => {
           </div>
 
           {/* Email */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}
+          >
             <label className="form-label">Email Address</label>
             <input
               type="email"
@@ -140,7 +155,9 @@ const RegisterPage = () => {
           </div>
 
           {/* Password */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}
+          >
             <label className="form-label">Password</label>
             <div style={{ position: "relative" }}>
               <input
@@ -177,9 +194,17 @@ const RegisterPage = () => {
           </div>
 
           {/* Role selector */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}
+          >
             <label className="form-label">I am a…</label>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "0.75rem",
+              }}
+            >
               {[
                 { value: "jobseeker", label: "Job Seeker", emoji: "🔍" },
                 { value: "recruiter", label: "Recruiter", emoji: "🏢" },
@@ -195,9 +220,10 @@ const RegisterPage = () => {
                     cursor: "pointer",
                     transition: "all 0.2s ease",
                     border: `1.5px solid ${form.role === value ? "var(--accent)" : "rgba(255,255,255,0.08)"}`,
-                    background: form.role === value
-                      ? "rgba(139,92,246,0.15)"
-                      : "rgba(255,255,255,0.03)",
+                    background:
+                      form.role === value
+                        ? "rgba(139,92,246,0.15)"
+                        : "rgba(255,255,255,0.03)",
                   }}
                 >
                   <input
@@ -213,7 +239,10 @@ const RegisterPage = () => {
                     style={{
                       fontSize: "0.9rem",
                       fontWeight: 600,
-                      color: form.role === value ? "var(--accent-light)" : "var(--text-secondary)",
+                      color:
+                        form.role === value
+                          ? "var(--accent-light)"
+                          : "var(--text-secondary)",
                     }}
                   >
                     {label}
@@ -251,7 +280,9 @@ const RegisterPage = () => {
             }}
           >
             {loading ? (
-              <span style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <span
+                style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+              >
                 <span
                   style={{
                     width: "1rem",
@@ -282,7 +313,13 @@ const RegisterPage = () => {
           }}
         />
 
-        <p style={{ textAlign: "center", fontSize: "0.875rem", color: "var(--text-muted)" }}>
+        <p
+          style={{
+            textAlign: "center",
+            fontSize: "0.875rem",
+            color: "var(--text-muted)",
+          }}
+        >
           Already have an account?{" "}
           <Link
             to="/login"

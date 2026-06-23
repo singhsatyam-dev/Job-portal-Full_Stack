@@ -14,8 +14,8 @@ const ScoreGauge = ({ score }) => {
   const label = isGood
     ? "Excellent Match! 🎉"
     : score >= 60
-    ? "Good — Some Improvements Needed"
-    : "Needs Significant Improvement";
+      ? "Good — Some Improvements Needed"
+      : "Needs Significant Improvement";
 
   useEffect(() => {
     let start = 0;
@@ -34,8 +34,15 @@ const ScoreGauge = ({ score }) => {
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <div className="relative" style={{ width: radius * 2, height: radius * 2 }}>
-        <svg width={radius * 2} height={radius * 2} style={{ transform: "rotate(-90deg)" }}>
+      <div
+        className="relative"
+        style={{ width: radius * 2, height: radius * 2 }}
+      >
+        <svg
+          width={radius * 2}
+          height={radius * 2}
+          style={{ transform: "rotate(-90deg)" }}
+        >
           <circle
             cx={radius}
             cy={radius}
@@ -63,11 +70,18 @@ const ScoreGauge = ({ score }) => {
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span
             className="font-extrabold leading-none"
-            style={{ fontSize: "2.2rem", color, fontFamily: "'Outfit', sans-serif" }}
+            style={{
+              fontSize: "2.2rem",
+              color,
+              fontFamily: "'Outfit', sans-serif",
+            }}
           >
             {animatedScore}
           </span>
-          <span className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>
+          <span
+            className="text-xs mt-0.5"
+            style={{ color: "var(--text-muted)" }}
+          >
             / 100
           </span>
         </div>

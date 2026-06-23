@@ -97,7 +97,6 @@ const TESTIMONIALS = [
 const LandingPage = () => {
   return (
     <div style={{ overflowX: "hidden" }}>
-
       {/* ─── HERO ─── */}
       <section
         style={{
@@ -118,7 +117,8 @@ const LandingPage = () => {
             width: "700px",
             height: "700px",
             borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(139,92,246,0.18) 0%, transparent 65%)",
+            background:
+              "radial-gradient(circle, rgba(139,92,246,0.18) 0%, transparent 65%)",
             pointerEvents: "none",
             zIndex: 0,
           }}
@@ -131,7 +131,8 @@ const LandingPage = () => {
             width: "400px",
             height: "400px",
             borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(16,185,129,0.08) 0%, transparent 65%)",
+            background:
+              "radial-gradient(circle, rgba(16,185,129,0.08) 0%, transparent 65%)",
             pointerEvents: "none",
             zIndex: 0,
           }}
@@ -144,13 +145,17 @@ const LandingPage = () => {
             width: "300px",
             height: "300px",
             borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(6,182,212,0.07) 0%, transparent 65%)",
+            background:
+              "radial-gradient(circle, rgba(6,182,212,0.07) 0%, transparent 65%)",
             pointerEvents: "none",
             zIndex: 0,
           }}
         />
 
-        <div className="page-container-md fade-in" style={{ position: "relative", zIndex: 1 }}>
+        <div
+          className="page-container-md fade-in"
+          style={{ position: "relative", zIndex: 1 }}
+        >
           {/* Badge */}
           <div
             className="pulse-glow"
@@ -220,7 +225,6 @@ const LandingPage = () => {
             >
               Get Started Free <ArrowRight size={18} />
             </Link>
-            
           </div>
 
           {/* Trust badges */}
@@ -232,7 +236,11 @@ const LandingPage = () => {
               gap: "1.5rem",
             }}
           >
-            {["No credit card required", "Free ATS scoring", "Instant applications"].map((t) => (
+            {[
+              "No credit card required",
+              "Free ATS scoring",
+              "Instant applications",
+            ].map((t) => (
               <span key={t} className="trust-badge">
                 <CheckCircle size={14} color="var(--success)" /> {t}
               </span>
@@ -275,7 +283,10 @@ const LandingPage = () => {
               Everything you need to{" "}
               <span className="gradient-text">get hired</span>
             </h2>
-            <p>CareerForge puts smart tools in your hands — at every step of your journey.</p>
+            <p>
+              CareerForge puts smart tools in your hands — at every step of your
+              journey.
+            </p>
           </div>
 
           <div
@@ -285,57 +296,59 @@ const LandingPage = () => {
             }}
             className="features-grid"
           >
-            {FEATURES.map(({ icon: Icon, title, desc, color, bg, border, glow }) => (
-              <div
-                key={title}
-                className="feature-card"
-                style={{ "--card-glow": glow }}
-              >
-                {/* Icon */}
+            {FEATURES.map(
+              ({ icon: Icon, title, desc, color, bg, border, glow }) => (
                 <div
-                  style={{
-                    width: "3rem",
-                    height: "3rem",
-                    borderRadius: "14px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    background: bg,
-                    border: `1px solid ${border}`,
-                    flexShrink: 0,
-                  }}
+                  key={title}
+                  className="feature-card"
+                  style={{ "--card-glow": glow }}
                 >
-                  <Icon size={22} style={{ color }} />
+                  {/* Icon */}
+                  <div
+                    style={{
+                      width: "3rem",
+                      height: "3rem",
+                      borderRadius: "14px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      background: bg,
+                      border: `1px solid ${border}`,
+                      flexShrink: 0,
+                    }}
+                  >
+                    <Icon size={22} style={{ color }} />
+                  </div>
+                  <h3
+                    style={{
+                      fontSize: "1.1rem",
+                      fontWeight: 700,
+                      color: "var(--text-primary)",
+                    }}
+                  >
+                    {title}
+                  </h3>
+                  <p
+                    style={{
+                      fontSize: "0.9rem",
+                      lineHeight: 1.65,
+                      color: "var(--text-secondary)",
+                    }}
+                  >
+                    {desc}
+                  </p>
+                  {/* Bottom accent line */}
+                  <div
+                    style={{
+                      height: "2px",
+                      borderRadius: "2px",
+                      background: `linear-gradient(90deg, ${color}60, transparent)`,
+                      marginTop: "auto",
+                    }}
+                  />
                 </div>
-                <h3
-                  style={{
-                    fontSize: "1.1rem",
-                    fontWeight: 700,
-                    color: "var(--text-primary)",
-                  }}
-                >
-                  {title}
-                </h3>
-                <p
-                  style={{
-                    fontSize: "0.9rem",
-                    lineHeight: 1.65,
-                    color: "var(--text-secondary)",
-                  }}
-                >
-                  {desc}
-                </p>
-                {/* Bottom accent line */}
-                <div
-                  style={{
-                    height: "2px",
-                    borderRadius: "2px",
-                    background: `linear-gradient(90deg, ${color}60, transparent)`,
-                    marginTop: "auto",
-                  }}
-                />
-              </div>
-            ))}
+              ),
+            )}
           </div>
         </div>
         <style>{`
@@ -366,7 +379,8 @@ const LandingPage = () => {
                 left: "calc(33.33% + 1.5rem)",
                 right: "calc(33.33% + 1.5rem)",
                 height: "2px",
-                background: "linear-gradient(90deg, transparent, var(--accent), transparent)",
+                background:
+                  "linear-gradient(90deg, transparent, var(--accent), transparent)",
                 opacity: 0.3,
                 display: "none",
               }}
@@ -425,7 +439,10 @@ const LandingPage = () => {
             <h2>
               Loved by <span className="gradient-text">job seekers</span>
             </h2>
-            <p>Thousands of professionals trust CareerForge to advance their careers.</p>
+            <p>
+              Thousands of professionals trust CareerForge to advance their
+              careers.
+            </p>
           </div>
 
           <div
@@ -453,7 +470,13 @@ const LandingPage = () => {
                   "{quote}"
                 </p>
 
-                <div style={{ display: "flex", alignItems: "center", gap: "0.875rem" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.875rem",
+                  }}
+                >
                   <div
                     style={{
                       width: "2.5rem",
@@ -482,7 +505,12 @@ const LandingPage = () => {
                     >
                       {name}
                     </div>
-                    <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
+                    <div
+                      style={{
+                        fontSize: "0.75rem",
+                        color: "var(--text-muted)",
+                      }}
+                    >
                       {role}
                     </div>
                   </div>
@@ -561,7 +589,8 @@ const LandingPage = () => {
                   lineHeight: 1.6,
                 }}
               >
-                Join 50,000+ professionals who use CareerForge to land jobs faster with AI.
+                Join 50,000+ professionals who use CareerForge to land jobs
+                faster with AI.
               </p>
 
               <div

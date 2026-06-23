@@ -41,12 +41,18 @@ const CreateJobPage = () => {
   };
 
   return (
-    <div className="page-container-sm" style={{ paddingTop: "2.5rem", paddingBottom: "4rem" }}>
+    <div
+      className="page-container-sm"
+      style={{ paddingTop: "2.5rem", paddingBottom: "4rem" }}
+    >
       <Link to="/recruiter/dashboard" className="btn-ghost inline-flex mb-6">
         <ArrowLeft size={16} /> Back to Dashboard
       </Link>
 
-      <div className="glass fade-in" style={{ padding: "2.5rem", borderRadius: "24px" }}>
+      <div
+        className="glass fade-in"
+        style={{ padding: "2.5rem", borderRadius: "24px" }}
+      >
         <div className="flex items-center gap-3 mb-7">
           <div
             className="w-11 h-11 rounded-xl flex items-center justify-center"
