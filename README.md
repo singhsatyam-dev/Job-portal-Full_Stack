@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-=======
+
 # 🚀 CareerForge - AI Powered Job Portal
 
 CareerForge is a full-stack MERN Job Portal designed to bridge the gap between **Job Seekers** and **Recruiters** through a modern hiring platform. The application simplifies job discovery, application management, and candidate screening while integrating an **AI-powered ATS Resume Scorer** to help applicants improve their chances of getting shortlisted.
@@ -321,4 +320,4 @@ Aspiring Full Stack Developer passionate about building scalable web application
 
 ---
 
->>>>>>> 31d9bed4225df5929291710a6f72bef12fdd6ac8
+
