@@ -19,6 +19,7 @@ const EditJobPage = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
+  //Pre-fill the earlier content
   useEffect(() => {
     const fetch = async () => {
       try {

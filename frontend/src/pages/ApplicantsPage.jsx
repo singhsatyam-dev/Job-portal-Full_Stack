@@ -18,6 +18,8 @@ const ApplicantsPage = () => {
   const [jobTitle, setJobTitle] = useState("");
   const [loading, setLoading] = useState(true);
 
+  // Fetching all applicants for a job, Fetching job details, Storing data into component state ,
+  // and Running whenever job Id changes 
   useEffect(() => {
     const fetch = async () => {
       try {

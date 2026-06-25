@@ -15,7 +15,7 @@ export const RoleRoute = ({ role }) => {
   return <Outlet />;
 };
 
-// Jobseeker-only route — only authenticated jobseekers can access
+// Jobseeker-only route - only authenticated jobseekers can access
 export const JobseekerRoute = () => {
   const { user, isAuthenticated } = useAuth();
   if (!isAuthenticated) return <Navigate to="/" replace />;

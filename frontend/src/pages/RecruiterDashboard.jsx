@@ -25,6 +25,7 @@ const RecruiterDashboard = () => {
   const [deletingId, setDeletingId] = useState(null);
   const [confirmDelete, setConfirmDelete] = useState(null);
 
+  //feetching recruiter poster jobs
   const fetchJobs = async () => {
     setLoading(true);
     try {
@@ -37,6 +38,7 @@ const RecruiterDashboard = () => {
     }
   };
 
+  //fetching side effect
   useEffect(() => {
     fetchJobs();
   }, []);

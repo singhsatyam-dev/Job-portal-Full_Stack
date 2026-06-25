@@ -52,7 +52,8 @@ const HomePage = () => {
   const [atsLoading, setAtsLoading] = useState(false);
   const [atsResult, setAtsResult] = useState(null);
   const atsFileRef = useRef(null);
-
+  
+  //Fetching all present jobs
   const fetchJobs = async (q = "", page = 1) => {
     setLoading(true);
     try {
@@ -67,6 +68,7 @@ const HomePage = () => {
     }
   };
 
+  //fetching side effect
   useEffect(() => {
     fetchJobs(search, currentPage);
   }, []);
