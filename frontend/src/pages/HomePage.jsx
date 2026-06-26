@@ -52,7 +52,7 @@ const HomePage = () => {
   const [atsLoading, setAtsLoading] = useState(false);
   const [atsResult, setAtsResult] = useState(null);
   const atsFileRef = useRef(null);
-  
+
   //Fetching all present jobs
   const fetchJobs = async (q = "", page = 1) => {
     setLoading(true);
@@ -818,12 +818,19 @@ const HomePage = () => {
               ))}
             </div>
           )}
-
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
+          <div
+            style={{
+              marginTop: "3rem",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </div>
         </div>
       </section>
       <style>{`

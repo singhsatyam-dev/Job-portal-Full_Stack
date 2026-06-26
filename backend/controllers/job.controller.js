@@ -7,7 +7,7 @@ export default class JobController {
     try {
       const { search = "", page = 1 } = req.query;
 
-      const limit = 5;
+      const limit = 6;
       const currentPage = Number(page);
 
       //search filter
